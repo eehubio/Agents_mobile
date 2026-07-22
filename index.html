@@ -226,6 +226,103 @@ body.workflow-overlay-open .mobile-bottom-nav{opacity:0;visibility:hidden;pointe
 @media(min-width:1050px){.doc-reader-layout{grid-template-columns:minmax(0,1fr) 300px}.doc-toc{position:relative;inset:auto;width:auto;transform:none;box-shadow:none;z-index:1}.doc-toc-head{display:none}.doc-toc-list{border-left:1px solid var(--line)}.doc-toc-backdrop{display:none!important}.doc-reader-actions #docTocBtn{display:none}}
 @media(max-width:580px){.doc-reader-top{grid-template-columns:40px minmax(0,1fr) auto;padding:0 9px}.doc-reader-actions{gap:4px}.doc-reader-actions button{width:34px;height:34px}.doc-reader-container{padding:17px 14px calc(76px + env(safe-area-inset-bottom));font-size:var(--doc-font-size,15px)}.markdown-body h1{font-size:1.55em}.markdown-body h2{font-size:1.31em}.doc-search-row{grid-template-columns:minmax(0,1fr) auto}.doc-search-row #docSearchCount{grid-column:1/-1;text-align:center;height:auto;border:0;background:transparent;color:var(--muted)}}
 
+
+/* ===== EEAgent V5 workflow and desktop-doc fixes ===== */
+.modal,.drawer{z-index:300!important}
+.drawer-panel{
+  padding:0!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+.drawer-scroll{
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:24px;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-gutter:stable;
+}
+.drawer-scroll-spacer{height:12px}
+.drawer-footer{
+  position:relative!important;
+  inset:auto!important;
+  z-index:14;
+  flex:0 0 auto;
+  margin:0!important;
+  padding:13px 24px calc(13px + env(safe-area-inset-bottom))!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  background:var(--panel)!important;
+  border-top:1px solid var(--line);
+  box-shadow:0 -10px 28px rgba(20,40,80,.10);
+}
+.drawer-footer .btn{
+  min-width:0;
+  height:44px;
+  padding:0 8px;
+  white-space:nowrap;
+}
+body.workflow-overlay-open{
+  overflow:hidden!important;
+  touch-action:none;
+  overscroll-behavior:none;
+}
+body.workflow-overlay-open .mobile-bottom-nav{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transform:translateY(100%)!important;
+}
+.doc-reader{z-index:360!important}
+
+@media(max-width:720px){
+  .drawer-panel{
+    top:max(env(safe-area-inset-top),8px)!important;
+    bottom:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    border-left:0!important;
+    border-radius:24px 24px 0 0!important;
+  }
+  .drawer-scroll{
+    padding:18px 15px 14px!important;
+    scroll-padding-bottom:18px;
+  }
+  .drawer-footer{
+    padding:11px 15px calc(11px + max(env(safe-area-inset-bottom),8px))!important;
+    gap:8px!important;
+  }
+  .drawer-footer .btn{
+    height:44px;
+    font-size:12px;
+    padding:0 5px;
+  }
+}
+@media(max-width:370px){
+  .drawer-footer{gap:6px!important;padding-left:10px!important;padding-right:10px!important}
+  .drawer-footer .btn{font-size:11px}
+}
+
+
+/* ===== EEAgent V6 Markdown loading-state fix ===== */
+.doc-reader-state[hidden],
+#docLoading[hidden]{
+  display:none!important;
+  min-height:0!important;
+  height:0!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+
 </style>
 </head>
 <body>
@@ -239,6 +336,7 @@ body.workflow-overlay-open .mobile-bottom-nav{opacity:0;visibility:hidden;pointe
       <a href="#projects">项目</a>
     </nav>
     <div class="actions">
+      <button class="icon-btn" id="refreshAppBtn" title="强制刷新到最新版" aria-label="强制刷新到最新版">↻</button>
       <button class="icon-btn" id="themeBtn" title="切换主题">◐</button>
       <button class="btn primary" id="newWorkflowTop">新建工作流</button>
     </div>
@@ -314,81 +412,46 @@ body.workflow-overlay-open .mobile-bottom-nav{opacity:0;visibility:hidden;pointe
 
 <div class="drawer" id="workflowDrawer">
   <div class="backdrop" data-close="drawer"></div>
-  <aside class="drawer-panel">
-    <button class="icon-btn close" data-close="drawer">×</button>
-    <h2>工作流编排</h2>
-    <div class="drawer-sub">可以创建多个工作流。工作流会保存在当前浏览器，也可以导出备份后在其他设备导入。</div>
+  <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="工作流编排">
+    <div class="drawer-scroll" id="workflowDrawerScroll">
+      <button class="icon-btn close" data-close="drawer" aria-label="关闭工作流">×</button>
+      <h2>工作流编排</h2>
+      <div class="drawer-sub">可以创建多个工作流。工作流保存在当前浏览器，也可以导出备份后在其他设备导入。</div>
 
-    <div class="workflow-manager">
-      <div class="workflow-name-row">
-        <input class="workflow-name-input" id="workflowName" maxlength="80" placeholder="输入工作流名称">
-        <button class="btn primary" id="saveWorkflow">保存</button>
-      </div>
-      <div class="workflow-manager-actions">
-        <button class="btn" id="newWorkflow">新建</button>
-        <button class="btn" id="duplicateWorkflow">复制当前</button>
-        <button class="btn" id="exportAllWorkflows">备份全部</button>
-        <button class="btn" id="importWorkflows">导入备份</button>
-        <input type="file" id="importWorkflowsFile" accept="application/json,.json" hidden>
+      <div class="workflow-manager">
+        <div class="workflow-name-row">
+          <input class="workflow-name-input" id="workflowName" maxlength="80" placeholder="输入工作流名称">
+          <button class="btn primary" id="saveWorkflow">保存</button>
+        </div>
+        <div class="workflow-manager-actions">
+          <button class="btn" id="newWorkflow">新建</button>
+          <button class="btn" id="duplicateWorkflow">复制当前</button>
+          <button class="btn" id="exportAllWorkflows">备份全部</button>
+          <button class="btn" id="importWorkflows">导入备份</button>
+          <input type="file" id="importWorkflowsFile" accept="application/json,.json" hidden>
+        </div>
+
+        <div class="saved-workflows-head">
+          <h3>已保存的工作流</h3>
+          <span id="savedWorkflowCount">0 个</span>
+        </div>
+        <div class="saved-workflows-list" id="savedWorkflowList"></div>
       </div>
 
-      <div class="saved-workflows-head">
-        <h3>已保存的工作流</h3>
-        <span id="savedWorkflowCount">0 个</span>
+      <div class="current-workflow-head">
+        <h3>当前编排</h3>
+        <span id="currentWorkflowState">未保存</span>
       </div>
-      <div class="saved-workflows-list" id="savedWorkflowList"></div>
+      <div class="workflow-list" id="workflowList"></div>
+      <div class="drawer-scroll-spacer" aria-hidden="true"></div>
     </div>
 
-    <div class="current-workflow-head">
-      <h3>当前编排</h3>
-      <span id="currentWorkflowState">未保存</span>
-    </div>
-    <div class="workflow-list" id="workflowList"></div>
     <div class="drawer-footer">
       <button class="btn" id="clearWorkflow">清空当前</button>
       <button class="btn" id="copyWorkflow">复制 JSON</button>
       <button class="btn primary" id="downloadWorkflow">导出当前</button>
     </div>
   </aside>
-</div>
-
-
-<div class="doc-reader" id="docReader" aria-hidden="true">
-  <header class="doc-reader-header">
-    <div class="doc-reader-top">
-      <button class="doc-reader-back" id="docBackBtn" aria-label="返回">‹</button>
-      <div class="doc-reader-title"><b id="docTitle">设计方案</b><span id="docMeta"></span></div>
-      <div class="doc-reader-actions">
-        <button id="docSearchBtn" title="文内搜索">⌕</button>
-        <button id="docFontBtn" title="调整字号">Aa</button>
-        <button id="docTocBtn" title="目录">☰</button>
-        <button id="docDownloadBtn" title="下载 Markdown">↓</button>
-      </div>
-    </div>
-    <div class="doc-search-row" id="docSearchRow">
-      <input class="doc-search-input" id="docSearchInput" placeholder="搜索当前设计方案…">
-      <button id="docSearchPrev">↑</button>
-      <button id="docSearchNext">↓</button>
-      <button id="docSearchCount">0 / 0</button>
-    </div>
-    <div class="doc-offline-banner" id="docOfflineBanner"><b>离线可用</b>：47 份设计方案已包含在 PWA 缓存中。</div>
-    <div class="doc-progress-track"><div class="doc-progress-bar" id="docProgressBar"></div></div>
-  </header>
-  <div class="doc-reader-layout">
-    <div class="doc-reader-scroll" id="docReaderScroll">
-      <div class="doc-reader-container">
-        <div class="doc-reader-source" id="docSourceInfo"></div>
-        <div class="doc-reader-state" id="docLoading"><div><b>正在加载设计方案</b><span>Markdown 将在手机上转换为易读页面。</span></div></div>
-        <article class="markdown-body" id="markdownBody" hidden></article>
-        <div class="doc-reader-nav" id="docReaderNav" hidden></div>
-      </div>
-    </div>
-    <div class="doc-toc-backdrop" id="docTocBackdrop"></div>
-    <aside class="doc-toc" id="docToc">
-      <div class="doc-toc-head"><b>文档目录</b><button class="icon-btn" id="docTocClose">×</button></div>
-      <div class="doc-toc-list" id="docTocList"></div>
-    </aside>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -407,7 +470,7 @@ body.workflow-overlay-open .mobile-bottom-nav{opacity:0;visibility:hidden;pointe
 
 <footer>
   <div class="footer-inner">
-    <div><b>EEAgent</b> · 电子工程 AI 协同平台</div>
+    <div><b>EEAgent</b> · 电子工程 AI 协同平台 · <b>V6</b></div>
     <div>47 份智能体设计方案已经与卡片关联，可在线阅读并下载 Markdown。</div>
   </div>
 </footer>
@@ -916,6 +979,10 @@ function openWorkflowDrawer(){
   $("#workflowDrawer").classList.add("show");
   setWorkflowOverlayOpen(true);
   renderWorkflow();
+  requestAnimationFrame(()=>{
+    const scroll=$("#workflowDrawerScroll");
+    if(scroll)scroll.scrollTop=0;
+  });
 }
 function exportAllWorkflowLibrary(){
   const payload = {
@@ -1057,10 +1124,21 @@ function updateDocFont(){
   $("#docFontBtn").title=`当前字号 ${DOC_FONT_SIZES[docFontIndex]}px，点击继续放大`;
 }
 async function loadAgentMarkdown(agent){
-  if(globalThis.EMBEDDED_AGENT_DOCS?.[String(agent.id)]) return globalThis.EMBEDDED_AGENT_DOCS[String(agent.id)];
-  const response=await fetch(agent.doc,{cache:"force-cache"});
-  if(!response.ok)throw new Error(`HTTP ${response.status}`);
-  return await response.text();
+  if(globalThis.EMBEDDED_AGENT_DOCS?.[String(agent.id)]){
+    return globalThis.EMBEDDED_AGENT_DOCS[String(agent.id)];
+  }
+  const documentUrl=new URL(agent.doc,location.href);
+  try{
+    const response=await fetch(documentUrl.href,{cache:"no-cache"});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    return await response.text();
+  }catch(networkError){
+    if("caches" in window){
+      const cached=await caches.match(documentUrl.href) || await caches.match(agent.doc);
+      if(cached)return await cached.text();
+    }
+    throw networkError;
+  }
 }
 async function openDocument(agentId,{updateHash=true}={}){
   const agent=agents.find(item=>item.id===Number(agentId));
@@ -1071,18 +1149,27 @@ async function openDocument(agentId,{updateHash=true}={}){
   $("#docMeta").textContent=`Agent ${String(agent.id).padStart(2,"0")} · ${agent.category}`;
   $("#docSourceInfo").innerHTML=`<b>设计方案 Markdown</b><span class="doc-source-pill">${Math.max(1,Math.round((agent.docBytes||0)/1024))} KB</span><span>${docEscapeHtml(agent.docSource||agent.doc)}</span>`;
   $("#markdownBody").hidden=true;$("#docReaderNav").hidden=true;
-  $("#docLoading").hidden=false;$("#docLoading").innerHTML='<div><b>正在加载设计方案</b><span>Markdown 将在手机上转换为易读页面。</span></div>';
+  const docLoading=$("#docLoading");
+  docLoading.hidden=false;
+  docLoading.style.display="grid";
+  docLoading.innerHTML='<div><b>正在加载设计方案</b><span>Markdown 将转换为易读页面。</span></div>';
   $("#docTocList").innerHTML="";$("#docProgressBar").style.width="0%";
   $("#docReader").classList.add("show");$("#docReader").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";updateDocFont();
   if(updateHash)history.pushState({docAgentId:agent.id},"",`#agent-${agent.id}-design`);
   try{
     currentDocMarkdown=await loadAgentMarkdown(agent);
     const rendered=renderMarkdown(currentDocMarkdown);currentDocToc=rendered.toc;
-    $("#markdownBody").innerHTML=rendered.html;$("#markdownBody").hidden=false;$("#docLoading").hidden=true;
+    $("#markdownBody").innerHTML=rendered.html;
+    $("#markdownBody").hidden=false;
+    docLoading.hidden=true;
+    docLoading.style.display="none";
+    docLoading.innerHTML="";
     renderDocToc();renderDocNavigation();$("#docReaderScroll").scrollTop=0;
     $("#docOfflineBanner").classList.toggle("show",location.protocol.startsWith("http"));
   }catch(error){
-    $("#docLoading").hidden=false;$("#docLoading").innerHTML=`<div><b>设计方案加载失败</b><span>${docEscapeHtml(error.message)}。部署 PWA 时请确认 docs 目录已上传。</span></div>`;
+    docLoading.hidden=false;
+    docLoading.style.display="grid";
+    docLoading.innerHTML=`<div><b>设计方案加载失败</b><span>${docEscapeHtml(error.message)}。请确认 docs 目录已上传；电脑端仍显示旧版时，点击页面右上角的 ↻ 清除旧缓存。</span></div>`;
   }
 }
 function closeDocument({historyBack=true}={}){
@@ -1219,7 +1306,31 @@ document.querySelector('.mobile-bottom-nav')?.addEventListener('click',e=>{
     document.getElementById('themeBtn').click();mobileSetActive('theme');
   }
 });
-if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+async function forceRefreshApplication(){
+  const confirmed=confirm("刷新会清除旧页面和文档缓存，但不会删除收藏与工作流。继续吗？");
+  if(!confirmed)return;
+  try{
+    if("serviceWorker" in navigator){
+      const registrations=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map(registration=>registration.unregister()));
+    }
+    if("caches" in window){
+      const cacheNames=await caches.keys();
+      await Promise.all(cacheNames.map(name=>caches.delete(name)));
+    }
+  }finally{
+    const url=new URL(location.href);
+    url.searchParams.set("_eeagent_refresh",Date.now().toString());
+    location.replace(url.href);
+  }
+}
+$("#refreshAppBtn").onclick=forceRefreshApplication;
+
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  navigator.serviceWorker.register('./sw.js')
+    .then(registration=>registration.update())
+    .catch(()=>{});
+}
 
 </script>
 </body>

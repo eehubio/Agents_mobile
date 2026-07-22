@@ -41,3 +41,30 @@ Android：Chrome 打开后，点菜单→“安装应用”或“添加到主屏
 - 支持 iPhone `safe-area-inset-bottom`。
 - 使用 `100dvh / 100svh` 适配微信、Safari 和 Chrome 的动态工具栏。
 - Service Worker 缓存升级为 `eeagent-mobile-v4-docs`。
+
+
+## V5
+
+- 工作流面板改为“独立滚动内容区 + 永久可见底部操作栏”。
+- 底部按钮不再使用 `position: sticky`。
+- 手机打开工作流后隐藏页面底部导航。
+- Markdown 文档网络优先，离线缓存兜底。
+- 桌面和手机右上角增加 `↻` 强制刷新按钮。
+- 强制刷新不会删除收藏和工作流。
+- Service Worker 缓存：`eeagent-mobile-v5-docs`。
+
+
+## V6：Markdown 大片空白修复
+
+问题原因：
+
+- `#docLoading` 使用 `hidden=true` 隐藏；
+- 但 `.doc-reader-state { display:grid; min-height:54dvh; }` 覆盖了浏览器的默认隐藏行为；
+- 因此加载占位区仍占据约半个视口高度，正文被推到下方。
+
+修复：
+
+- 增加 `.doc-reader-state[hidden] { display:none!important; }`；
+- 加载成功后显式设置 `style.display = "none"` 并清空占位内容；
+- 加载开始和失败时再显式恢复为 `display:grid`；
+- Service Worker 缓存升级为 `eeagent-mobile-v6-docs`。

@@ -30,3 +30,14 @@ Android：Chrome 打开后，点菜单→“安装应用”或“添加到主屏
 - 阅读器支持目录、阅读进度、文内搜索、字号切换、上一篇/下一篇和 Markdown 下载。
 - Service Worker 会预缓存全部 47 份文档，安装 PWA 后可以离线阅读。
 - 更新某个智能体文档时，替换对应 `docs/agent-XX.md` 并修改 `sw.js` 的缓存版本。
+
+
+## V4 修复
+
+- 工作流抽屉层级高于移动端底部导航。
+- 打开工作流时自动隐藏底部导航。
+- 禁止背景页面继续滚动。
+- 底部“清空当前 / 复制 JSON / 导出当前”固定在抽屉内部。
+- 支持 iPhone `safe-area-inset-bottom`。
+- 使用 `100dvh / 100svh` 适配微信、Safari 和 Chrome 的动态工具栏。
+- Service Worker 缓存升级为 `eeagent-mobile-v4-docs`。

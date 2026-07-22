@@ -100,7 +100,7 @@ select{padding:0 12px}
 .workflow-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:40;background:#112044;color:white;border-radius:18px;padding:10px 12px 10px 18px;display:none;align-items:center;gap:16px;box-shadow:0 20px 55px rgba(8,21,56,.35)}
 .workflow-bar.show{display:flex}.workflow-bar b{font-size:14px}.workflow-bar span{font-size:12px;color:#b9c7e8}
 .workflow-bar .btn{height:38px;border:0}
-.modal,.drawer{position:fixed;inset:0;z-index:60;display:none}
+.modal,.drawer{position:fixed;inset:0;z-index:120;display:none}
 .modal.show,.drawer.show{display:block}
 .backdrop{position:absolute;inset:0;background:rgba(5,12,28,.55);backdrop-filter:blur(5px)}
 .modal-panel{position:relative;width:min(680px,calc(100% - 28px));margin:8vh auto;background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.25);padding:24px}
@@ -112,7 +112,7 @@ select{padding:0 12px}
 .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
 .tag{font-size:12px;background:var(--chip);color:var(--chipText);border-radius:999px;padding:7px 10px}
 .modal-footer{display:flex;justify-content:space-between;gap:10px;margin-top:24px;flex-wrap:wrap}
-.drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(500px,100%);background:var(--panel);border-left:1px solid var(--line);box-shadow:-24px 0 70px rgba(0,0,0,.22);padding:24px;overflow:auto}
+.drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(500px,100%);background:var(--panel);border-left:1px solid var(--line);box-shadow:-24px 0 70px rgba(0,0,0,.22);padding:24px;overflow:auto;overscroll-behavior:contain;scroll-padding-bottom:120px;-webkit-overflow-scrolling:touch}
 .drawer h2{margin:0 0 6px}.drawer-sub{color:var(--muted);font-size:13px;margin-bottom:20px}
 
 .workflow-manager{margin:16px 0 18px;padding:14px;border:1px solid var(--line);background:var(--panel2);border-radius:16px}
@@ -147,7 +147,7 @@ select{padding:0 12px}
 .order{width:28px;height:28px;border-radius:9px;background:var(--chip);color:var(--chipText);display:grid;place-items:center;font-size:12px;font-weight:800}
 .workflow-item b{font-size:14px}.workflow-item small{display:block;color:var(--muted);margin-top:2px}
 .workflow-actions{display:flex;gap:5px}.workflow-actions button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
-.drawer-footer{position:sticky;bottom:-24px;background:linear-gradient(180deg,transparent 0,var(--panel) 20%);padding:36px 0 8px;display:flex;gap:10px}
+.drawer-footer{position:sticky;bottom:0;z-index:12;margin:18px -24px -24px;background:linear-gradient(180deg,transparent 0,var(--panel) 26%);padding:34px 24px calc(16px + env(safe-area-inset-bottom));display:flex;gap:10px}
 .toast{position:fixed;right:22px;bottom:22px;z-index:100;background:#101b34;color:#fff;padding:13px 16px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s;font-size:13px}
 .toast.show{opacity:1;transform:translateY(0)}
 footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
@@ -167,6 +167,8 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 
 /* ===== EEAgent mobile-first overrides ===== */
 .mobile-bottom-nav,.mobile-install{display:none}
+body.workflow-overlay-open{overflow:hidden;touch-action:none}
+body.workflow-overlay-open .mobile-bottom-nav{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(100%)}
 @media(max-width:720px){
   body{padding-bottom:calc(76px + env(safe-area-inset-bottom));overflow-x:hidden}
   .topbar{height:58px;padding-top:env(safe-area-inset-top)}
@@ -193,9 +195,9 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   .card-actions{grid-column:2/4;grid-row:3;margin-top:9px}.text-btn{font-size:12px}.mini-btn{width:32px;height:32px}
   .workflow-bar{display:none!important}
   .modal-panel{position:absolute;left:0;right:0;bottom:0;width:100%;margin:0;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88dvh;overflow:auto}.modal-head .agent-icon{width:52px;height:52px}.modal h2{font-size:21px}.modal-copy{font-size:14px;line-height:1.75}.modal-footer{display:grid;grid-template-columns:1fr 1fr}.modal-footer .btn{display:grid;place-items:center}
-  .drawer-panel{top:auto;bottom:0;right:0;width:100%;height:auto;max-height:90dvh;border-left:0;border-radius:24px 24px 0 0;padding:18px 15px calc(18px + env(safe-area-inset-bottom))}.drawer-footer{bottom:-18px}
+  .drawer-panel{top:auto;bottom:0;right:0;width:100%;height:auto;max-height:calc(100dvh - env(safe-area-inset-top) - 8px);max-height:calc(100svh - env(safe-area-inset-top) - 8px);border-left:0;border-radius:24px 24px 0 0;padding:18px 15px 0;scroll-padding-bottom:132px;overscroll-behavior:contain}.drawer-footer{bottom:0;margin:18px -15px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:34px 15px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent 0,var(--panel) 25%);box-shadow:0 -1px 0 var(--line)}@media(max-width:390px){.drawer-footer{gap:7px}.drawer-footer .btn{padding:0 7px;font-size:12px}}
   footer{display:none}
-  .mobile-bottom-nav{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:80;grid-template-columns:repeat(4,1fr);background:color-mix(in srgb,var(--panel) 96%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+  .mobile-bottom-nav{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:80;transition:opacity .18s ease,transform .18s ease,visibility .18s ease;grid-template-columns:repeat(4,1fr);background:color-mix(in srgb,var(--panel) 96%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
   .mobile-nav-btn{height:64px;border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px}.mobile-nav-btn b{font-size:18px;font-weight:500}.mobile-nav-btn.active{color:var(--primary);font-weight:750}
   .mobile-install{display:none;margin:0 14px 12px;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:12px;align-items:center;gap:10px}.mobile-install.show{display:flex}.mobile-install-copy{flex:1}.mobile-install-copy b{display:block;font-size:13px}.mobile-install-copy span{font-size:10px;color:var(--muted)}.mobile-install .btn{height:38px;padding:0 13px}
 }
@@ -907,8 +909,12 @@ function deleteSavedWorkflow(id){
   updateWorkflowBar();
   toast("工作流已删除");
 }
+function setWorkflowOverlayOpen(open){
+  document.body.classList.toggle("workflow-overlay-open", open);
+}
 function openWorkflowDrawer(){
   $("#workflowDrawer").classList.add("show");
+  setWorkflowOverlayOpen(true);
   renderWorkflow();
 }
 function exportAllWorkflowLibrary(){
@@ -1133,7 +1139,14 @@ function downloadJson(){
   const blob=new Blob([JSON.stringify(workflowPayload(),null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="eeagent-workflow.json";a.click();URL.revokeObjectURL(url);
 }
-function close(type){if(type==="modal")$("#agentModal").classList.remove("show");else $("#workflowDrawer").classList.remove("show")}
+function close(type){
+  if(type==="modal"){
+    $("#agentModal").classList.remove("show");
+  }else{
+    $("#workflowDrawer").classList.remove("show");
+    setWorkflowOverlayOpen(false);
+  }
+}
 $$("[data-close]").forEach(x=>x.onclick=()=>close(x.dataset.close));
 $("#searchInput").oninput=e=>{state.query=e.target.value;render()};
 $("#sortSelect").onchange=e=>{state.sort=e.target.value;render()};
@@ -1164,7 +1177,12 @@ $("#themeBtn").onclick=()=>{
   document.documentElement.dataset.theme=next;localStorage.setItem("eeagent-theme",next);
 };
 document.documentElement.dataset.theme=localStorage.getItem("eeagent-theme")||"light";
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){if($("#docReader").classList.contains("show")){closeDocument();return;}$("#agentModal").classList.remove("show");$("#workflowDrawer").classList.remove("show")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){
+  if($("#docReader").classList.contains("show")){closeDocument();return;}
+  $("#agentModal").classList.remove("show");
+  $("#workflowDrawer").classList.remove("show");
+  setWorkflowOverlayOpen(false);
+}});
 persistWorkflowLibrary();
 persistWorkflowDraft();
 render();

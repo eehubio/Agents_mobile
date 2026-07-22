@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#1265f7" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="EEAgent" />
+<link rel="manifest" href="manifest.webmanifest" />
+<title>EEAgent 智能体广场</title>
+<meta name="description" content="电子工程全流程 AI Agent Hub 交互式原型" />
+<style>
+:root{
+  --bg:#f6f8fc; --panel:#fff; --panel2:#f9fbff; --text:#13213c; --muted:#66738c;
+  --line:#e4e9f2; --primary:#246bfd; --primary2:#5d8cff; --green:#14a66f;
+  --shadow:0 18px 50px rgba(24,54,96,.09); --radius:18px;
+  --chip:#eef3ff; --chipText:#325aaf;
+}
+[data-theme="dark"]{
+  --bg:#0d1320; --panel:#141c2b; --panel2:#111827; --text:#edf3ff; --muted:#9aa9c0;
+  --line:#27334a; --primary:#6f9cff; --primary2:#8bb0ff; --green:#38d39f;
+  --shadow:0 18px 50px rgba(0,0,0,.3); --chip:#1e2b46; --chipText:#b9ceff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif}
+button,input,select{font:inherit}
+a{text-decoration:none;color:inherit}
+.topbar{
+  position:sticky;top:0;z-index:30;height:68px;background:color-mix(in srgb,var(--panel) 92%,transparent);
+  backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center;
+}
+.topbar-inner{width:min(1440px,calc(100% - 40px));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:.2px}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--primary),#7aa0ff);display:grid;place-items:center;color:#fff;box-shadow:0 8px 20px rgba(36,107,253,.25)}
+.nav{display:flex;gap:28px;color:var(--muted);font-size:14px}
+.nav a.active{color:var(--primary);font-weight:700}
+.actions{display:flex;align-items:center;gap:10px}
+.icon-btn,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;height:40px;padding:0 14px;cursor:pointer;transition:.2s}
+.icon-btn{width:40px;padding:0;display:grid;place-items:center}
+.btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;border:0;font-weight:700}
+.btn:hover,.icon-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(30,60,110,.12)}
+.hero{background:
+ radial-gradient(circle at 78% 38%,rgba(36,107,253,.14),transparent 34%),
+ linear-gradient(180deg,var(--panel),var(--panel2));
+ border-bottom:1px solid var(--line);
+}
+.hero-inner{width:min(1440px,calc(100% - 40px));margin:auto;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;min-height:360px;gap:40px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:var(--chip);color:var(--chipText);font-size:13px;font-weight:700}
+h1{font-size:46px;line-height:1.13;margin:18px 0 14px;letter-spacing:-1.2px}
+.hero p{font-size:17px;line-height:1.9;color:var(--muted);max-width:760px;margin:0}
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
+.stat{min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 10px 28px rgba(40,70,120,.06)}
+.stat b{display:block;font-size:24px;margin-bottom:4px}.stat span{color:var(--muted);font-size:13px}
+.hero-art{height:290px;display:grid;place-items:center;position:relative}
+.chip-stack{width:250px;height:250px;position:relative;transform:rotate(-2deg)}
+.layer{position:absolute;left:50%;transform:translateX(-50%);width:210px;height:74px;border-radius:20px;background:linear-gradient(145deg,#f9fbff,#dce8ff);border:1px solid #bdd1ff;box-shadow:0 24px 50px rgba(41,95,190,.18)}
+.layer:nth-child(1){bottom:20px;transform:translateX(-50%) scale(1.08)}
+.layer:nth-child(2){bottom:58px;transform:translateX(-50%) scale(1.02)}
+.layer:nth-child(3){bottom:96px}
+.core{position:absolute;left:50%;top:30px;transform:translateX(-50%);width:170px;height:120px;border-radius:26px;background:linear-gradient(145deg,#0f3f9d,#2479ff);color:white;display:grid;place-items:center;text-align:center;font-weight:800;font-size:22px;box-shadow:0 22px 48px rgba(36,107,253,.32)}
+.core small{display:block;font-weight:500;font-size:12px;opacity:.78;margin-top:6px}
+.node{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--primary);box-shadow:0 6px 16px rgba(36,107,253,.25)}
+.node.n1{left:-8px;top:95px}.node.n2{right:-12px;top:65px}.node.n3{right:8px;bottom:30px}.node.n4{left:15px;bottom:4px}
+.main{width:min(1440px,calc(100% - 40px));margin:24px auto 80px}
+.toolbar{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;position:sticky;top:82px;z-index:20;box-shadow:0 12px 35px rgba(31,63,110,.08)}
+.filter-row{display:flex;gap:9px;flex-wrap:wrap}
+.filter-chip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:10px 13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.18s}
+.filter-chip.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 8px 18px rgba(36,107,253,.22)}
+.search-row{display:grid;grid-template-columns:1fr 170px 150px;gap:10px;margin-top:12px}
+.search-wrap{position:relative}.search-wrap span{position:absolute;left:14px;top:11px;color:var(--muted)}
+.search-wrap input,select{width:100%;height:44px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;outline:none}
+.search-wrap input{padding:0 14px 0 42px}
+select{padding:0 12px}
+.summary-line{display:flex;justify-content:space-between;align-items:center;margin:24px 2px 14px;color:var(--muted);font-size:14px}
+.category-section{margin-top:34px}
+.category-title{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:21px}
+.category-dot{width:13px;height:13px;border-radius:4px;background:var(--cat);box-shadow:0 0 0 6px color-mix(in srgb,var(--cat) 12%,transparent)}
+.agent-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{
+  position:relative;background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px;min-height:174px;
+  transition:.2s;display:flex;flex-direction:column;overflow:hidden;
+}
+.card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--cat);opacity:.8}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--cat) 35%,var(--line))}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.agent-icon{width:44px;height:44px;border-radius:14px;background:color-mix(in srgb,var(--cat) 11%,var(--panel));color:var(--cat);display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--cat) 24%,var(--line))}
+.agent-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.card-num{font-size:12px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:5px 8px;border-radius:999px}
+.card h3{font-size:16px;margin:13px 0 7px}
+.card p{font-size:13px;line-height:1.65;color:var(--muted);margin:0;flex:1}
+.card-actions{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:8px}
+.text-btn{border:0;background:transparent;color:var(--primary);font-weight:700;font-size:13px;cursor:pointer;padding:6px 0}
+.mini-actions{display:flex;gap:7px}
+.mini-btn{width:31px;height:31px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);cursor:pointer;display:grid;place-items:center}
+.mini-btn.active{background:color-mix(in srgb,var(--cat) 14%,var(--panel));color:var(--cat);border-color:color-mix(in srgb,var(--cat) 30%,var(--line))}
+.empty{display:none;text-align:center;padding:70px 20px;background:var(--panel);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+.workflow-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:40;background:#112044;color:white;border-radius:18px;padding:10px 12px 10px 18px;display:none;align-items:center;gap:16px;box-shadow:0 20px 55px rgba(8,21,56,.35)}
+.workflow-bar.show{display:flex}.workflow-bar b{font-size:14px}.workflow-bar span{font-size:12px;color:#b9c7e8}
+.workflow-bar .btn{height:38px;border:0}
+.modal,.drawer{position:fixed;inset:0;z-index:60;display:none}
+.modal.show,.drawer.show{display:block}
+.backdrop{position:absolute;inset:0;background:rgba(5,12,28,.55);backdrop-filter:blur(5px)}
+.modal-panel{position:relative;width:min(680px,calc(100% - 28px));margin:8vh auto;background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.25);padding:24px}
+.close{position:absolute;right:16px;top:16px}
+.modal-head{display:flex;gap:16px;align-items:flex-start;padding-right:42px}
+.modal-head .agent-icon{width:54px;height:54px}.modal h2{margin:3px 0 7px;font-size:24px}
+.meta{color:var(--muted);font-size:13px}
+.modal-copy{margin-top:20px;color:var(--muted);line-height:1.8}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.tag{font-size:12px;background:var(--chip);color:var(--chipText);border-radius:999px;padding:7px 10px}
+.modal-footer{display:flex;justify-content:space-between;gap:10px;margin-top:24px;flex-wrap:wrap}
+.drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(500px,100%);background:var(--panel);border-left:1px solid var(--line);box-shadow:-24px 0 70px rgba(0,0,0,.22);padding:24px;overflow:auto}
+.drawer h2{margin:0 0 6px}.drawer-sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+.workflow-list{display:flex;flex-direction:column;gap:10px}
+.workflow-item{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--panel2);border-radius:13px;padding:10px}
+.order{width:28px;height:28px;border-radius:9px;background:var(--chip);color:var(--chipText);display:grid;place-items:center;font-size:12px;font-weight:800}
+.workflow-item b{font-size:14px}.workflow-item small{display:block;color:var(--muted);margin-top:2px}
+.workflow-actions{display:flex;gap:5px}.workflow-actions button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
+.drawer-footer{position:sticky;bottom:-24px;background:linear-gradient(180deg,transparent 0,var(--panel) 20%);padding:36px 0 8px;display:flex;gap:10px}
+.toast{position:fixed;right:22px;bottom:22px;z-index:100;background:#101b34;color:#fff;padding:13px 16px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s;font-size:13px}
+.toast.show{opacity:1;transform:translateY(0)}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+.footer-inner{width:min(1440px,calc(100% - 40px));margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:1120px){.agent-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:860px){
+ .nav{display:none}.hero-inner{grid-template-columns:1fr;min-height:auto;padding:54px 0 26px}.hero-art{display:none}
+ h1{font-size:38px}.agent-grid{grid-template-columns:repeat(2,1fr)}
+ .search-row{grid-template-columns:1fr 150px}.search-row .btn{grid-column:1/-1}
+}
+@media(max-width:580px){
+ .topbar-inner,.hero-inner,.main,.footer-inner{width:min(100% - 24px,1440px)}
+ .topbar .btn.primary{display:none}h1{font-size:31px}.stats{display:grid;grid-template-columns:1fr 1fr}
+ .stat{min-width:0}.toolbar{top:76px}.search-row{grid-template-columns:1fr}.agent-grid{grid-template-columns:1fr}
+ .workflow-bar{width:calc(100% - 24px);justify-content:space-between}.workflow-bar span{display:none}
+}
+
+/* ===== EEAgent mobile-first overrides ===== */
+.mobile-bottom-nav,.mobile-install{display:none}
+@media(max-width:720px){
+  body{padding-bottom:calc(76px + env(safe-area-inset-bottom));overflow-x:hidden}
+  .topbar{height:58px;padding-top:env(safe-area-inset-top)}
+  .topbar-inner{width:100%;padding:0 13px}.brand{font-size:19px}.brand-mark{width:32px;height:32px}
+  .actions .btn.primary{display:none}.nav{display:none}.icon-btn{width:38px;height:38px}
+  .hero-inner{width:100%;display:block;min-height:0;padding:20px 14px 14px}
+  .hero{border-bottom:0;background:var(--bg)}.hero-art{display:none}
+  .hero-inner>div:first-child{background:linear-gradient(145deg,#1265f7,#4054d8);color:#fff;border-radius:22px;padding:20px;box-shadow:0 18px 42px rgba(18,101,247,.22);position:relative;overflow:hidden}
+  .hero-inner>div:first-child:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-65px;top:-60px;background:rgba(255,255,255,.12)}
+  .eyebrow{font-size:11px;background:rgba(255,255,255,.16);color:#fff;padding:6px 9px}
+  h1{font-size:27px;line-height:1.16;margin:14px 0 9px;letter-spacing:-.5px}.hero p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.82);max-width:85%}
+  .stats{gap:8px;margin-top:15px}.stat{min-width:0;flex:1;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18);box-shadow:none;padding:10px}.stat b{font-size:20px}.stat span{font-size:10px;color:rgba(255,255,255,.72)}
+  .main{width:100%;margin:0 auto 40px;padding:0 13px}
+  .toolbar{position:sticky;top:calc(58px + env(safe-area-inset-top));padding:8px 0 10px;border:0;border-radius:0;background:var(--bg);box-shadow:none;z-index:25}
+  .filter-row{display:flex;overflow-x:auto;flex-wrap:nowrap;gap:7px;padding:0 1px 2px;scrollbar-width:none}.filter-row::-webkit-scrollbar{display:none}
+  .filter-chip{white-space:nowrap;border-radius:999px;padding:9px 12px;font-size:12px;background:var(--panel)}
+  .search-row{display:grid;grid-template-columns:1fr 104px;gap:8px;margin-top:8px}.search-row .btn{display:none}.search-wrap input,select{height:42px;border-radius:13px;font-size:13px}
+  .summary-line{margin:14px 2px 10px;font-size:12px}.summary-line span:last-child{display:none}
+  .category-section{margin-top:22px}.category-title{font-size:17px;margin-bottom:10px}.category-dot{width:10px;height:10px;box-shadow:0 0 0 5px color-mix(in srgb,var(--cat) 12%,transparent)}
+  .agent-grid{grid-template-columns:1fr;gap:9px}
+  .card{min-height:0;border-radius:17px;padding:13px 12px 12px;display:grid;grid-template-columns:48px minmax(0,1fr) auto;column-gap:11px;row-gap:0;align-items:center}
+  .card:before{width:3px}.card-top{display:contents}.agent-icon{grid-column:1;grid-row:1/4;width:48px;height:48px;border-radius:15px}.card-num{grid-column:3;grid-row:1;align-self:start;font-size:10px;padding:4px 6px}
+  .card h3{grid-column:2;grid-row:1;margin:0 0 4px;font-size:15px;padding-right:2px}.card p{grid-column:2/4;grid-row:2;font-size:12px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card-actions{grid-column:2/4;grid-row:3;margin-top:9px}.text-btn{font-size:12px}.mini-btn{width:32px;height:32px}
+  .workflow-bar{display:none!important}
+  .modal-panel{position:absolute;left:0;right:0;bottom:0;width:100%;margin:0;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88dvh;overflow:auto}.modal-head .agent-icon{width:52px;height:52px}.modal h2{font-size:21px}.modal-copy{font-size:14px;line-height:1.75}.modal-footer{display:grid;grid-template-columns:1fr 1fr}.modal-footer .btn{display:grid;place-items:center}
+  .drawer-panel{top:auto;bottom:0;right:0;width:100%;height:auto;max-height:90dvh;border-left:0;border-radius:24px 24px 0 0;padding:18px 15px calc(18px + env(safe-area-inset-bottom))}.drawer-footer{bottom:-18px}
+  footer{display:none}
+  .mobile-bottom-nav{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:80;grid-template-columns:repeat(4,1fr);background:color-mix(in srgb,var(--panel) 96%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+  .mobile-nav-btn{height:64px;border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px}.mobile-nav-btn b{font-size:18px;font-weight:500}.mobile-nav-btn.active{color:var(--primary);font-weight:750}
+  .mobile-install{display:none;margin:0 14px 12px;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:12px;align-items:center;gap:10px}.mobile-install.show{display:flex}.mobile-install-copy{flex:1}.mobile-install-copy b{display:block;font-size:13px}.mobile-install-copy span{font-size:10px;color:var(--muted)}.mobile-install .btn{height:38px;padding:0 13px}
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#"><span class="brand-mark">▦</span><span>EEAgent</span></a>
+    <nav class="nav">
+      <a class="active" href="#agents">智能体广场</a>
+      <a href="#workflow">工作流</a>
+      <a href="#knowledge">知识库</a>
+      <a href="#projects">项目</a>
+    </nav>
+    <div class="actions">
+      <button class="icon-btn" id="themeBtn" title="切换主题">◐</button>
+      <button class="btn primary" id="newWorkflowTop">新建工作流</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">⚡ 电子工程全流程 AI 协同平台</span>
+      <h1>电子工程 AI Agent Hub</h1>
+      <p>汇聚器件知识、需求分析、EDA、PCB、BOM、采购、制造、调试与变更闭环，把近 50 个专业智能体组合成可执行的工程工作流。</p>
+      <div class="stats">
+        <div class="stat"><b>47</b><span>专业智能体</span></div>
+        <div class="stat"><b>6</b><span>核心业务域</span></div>
+        <div class="stat"><b>∞</b><span>可组合工作流</span></div>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="chip-stack">
+        <div class="layer"></div><div class="layer"></div><div class="layer"></div>
+        <div class="core">EEAgent<small>Engineering Intelligence</small></div>
+        <div class="node n1"></div><div class="node n2"></div><div class="node n3"></div><div class="node n4"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="main" id="agents">
+  <section class="toolbar">
+    <div class="filter-row" id="filters"></div>
+    <div class="search-row">
+      <label class="search-wrap"><span>⌕</span><input id="searchInput" placeholder="搜索智能体名称、功能或编号…" /></label>
+      <select id="sortSelect">
+        <option value="number">按编号排序</option>
+        <option value="title">按名称排序</option>
+        <option value="category">按分类排序</option>
+      </select>
+      <button class="btn" id="clearBtn">重置筛选</button>
+    </div>
+  </section>
+
+  <div class="summary-line">
+    <span id="resultSummary">显示 47 个智能体</span>
+    <span>点击卡片查看详情，点击 “＋” 加入工作流</span>
+  </div>
+
+  <div id="sections"></div>
+  <div class="empty" id="emptyState">没有找到匹配的智能体，换个关键词试试。</div>
+</main>
+
+<div class="workflow-bar" id="workflowBar">
+  <div><b id="workflowCount">已选择 0 个智能体</b><br><span>可调整顺序并导出工作流 JSON</span></div>
+  <button class="btn primary" id="openWorkflow">查看工作流</button>
+</div>
+
+<div class="modal" id="agentModal">
+  <div class="backdrop" data-close="modal"></div>
+  <div class="modal-panel">
+    <button class="icon-btn close" data-close="modal">×</button>
+    <div class="modal-head">
+      <div class="agent-icon" id="modalIcon"></div>
+      <div><div class="meta" id="modalMeta"></div><h2 id="modalTitle"></h2></div>
+    </div>
+    <div class="modal-copy" id="modalDescription"></div>
+    <div class="tags" id="modalTags"></div>
+    <div class="modal-footer">
+      <button class="btn" id="modalAdd">加入工作流</button>
+      <a class="btn primary" id="modalLink" href="#">进入智能体</a>
+    </div>
+  </div>
+</div>
+
+<div class="drawer" id="workflowDrawer">
+  <div class="backdrop" data-close="drawer"></div>
+  <aside class="drawer-panel">
+    <button class="icon-btn close" data-close="drawer">×</button>
+    <h2>工作流编排</h2>
+    <div class="drawer-sub">通过上下移动调整执行顺序。此原型会把选择结果保存在浏览器本地。</div>
+    <div class="workflow-list" id="workflowList"></div>
+    <div class="drawer-footer">
+      <button class="btn" id="clearWorkflow">清空</button>
+      <button class="btn" id="copyWorkflow">复制 JSON</button>
+      <button class="btn primary" id="downloadWorkflow">导出工作流</button>
+    </div>
+  </aside>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<div class="mobile-install" id="mobileInstall">
+  <div class="mobile-install-copy"><b>添加到手机主屏幕</b><span>部署后可以像 App 一样随时打开</span></div>
+  <button class="btn primary" id="mobileInstallBtn">添加</button>
+</div>
+<nav class="mobile-bottom-nav" aria-label="移动端导航">
+  <button class="mobile-nav-btn active" data-mobile-action="all"><b>⌂</b><span>全部</span></button>
+  <button class="mobile-nav-btn" data-mobile-action="favorites"><b>☆</b><span>收藏</span></button>
+  <button class="mobile-nav-btn" data-mobile-action="workflow"><b>↗</b><span>工作流</span></button>
+  <button class="mobile-nav-btn" data-mobile-action="theme"><b>◐</b><span>主题</span></button>
+</nav>
+
+<footer>
+  <div class="footer-inner">
+    <div><b>EEAgent</b> · 电子工程 AI 协同平台</div>
+    <div>卡片链接为原型占位，可在页面内 agents 数据中替换为实际地址。</div>
+  </div>
+</footer>
+
+<script>
+const agents = [{"id": 1, "title": "Datasheet 资产接入", "description": "接入厂商页面、PDF、图片与已有器件资料，建立可追踪的数据源。", "category": "器件与资产", "icon": "datasheet", "url": "./agents/agent-1.html"}, {"id": 2, "title": "PDF 解析与 OCR 路由", "description": "识别数据手册版式，按文本、表格、图片和扫描页选择解析策略。", "category": "器件与资产", "icon": "pdf", "url": "./agents/agent-2.html"}, {"id": 3, "title": "器件分类与 Schema 路由", "description": "将器件归入正确分类，并匹配对应参数模板与抽取规则。", "category": "器件与资产", "icon": "schema", "url": "./agents/agent-3.html"}, {"id": 4, "title": "管脚、表格与图片定位", "description": "定位 Pin 表、参数表、框图、封装图和应用电路等关键区域。", "category": "器件与资产", "icon": "locate", "url": "./agents/agent-4.html"}, {"id": 5, "title": "参数抽取与单位归一", "description": "抽取关键参数，处理 Min/Typ/Max、条件、单位和证据锚点。", "category": "器件与资产", "icon": "parameter", "url": "./agents/agent-5.html"}, {"id": 6, "title": "引脚、封装与订货型号", "description": "解析 Pin、Package、Ordering Code 与不同温度/速度等级。", "category": "器件与资产", "icon": "package", "url": "./agents/agent-6.html"}, {"id": 7, "title": "证据锚定与人工审核", "description": "把结构化结果绑定原文位置，支持人工复核、修订与回写。", "category": "器件与资产", "icon": "evidence", "url": "./agents/agent-7.html"}, {"id": 8, "title": "KiCad 原理图符号生成", "description": "根据器件 Pin 定义生成 KiCad 符号，并做电气类型检查。", "category": "器件与资产", "icon": "symbol", "url": "./agents/agent-8.html"}, {"id": 9, "title": "封装、3D 与库资产生成", "description": "生成或匹配 Footprint、3D、Pin-Pad 映射和库版本信息。", "category": "器件与资产", "icon": "cube", "url": "./agents/agent-9.html"}, {"id": 10, "title": "工程需求结构化", "description": "将自然语言、PRD、图片和客户需求转为结构化工程约束。", "category": "需求与方案", "icon": "requirements", "url": "./agents/agent-10.html"}, {"id": 11, "title": "项目拆解与里程碑", "description": "拆解硬件、固件、结构、测试、采购和制造任务与依赖。", "category": "需求与方案", "icon": "milestone", "url": "./agents/agent-11.html"}, {"id": 12, "title": "功能架构与框图", "description": "生成系统框图、电源树、数据流、控制流和模块接口。", "category": "需求与方案", "icon": "architecture", "url": "./agents/agent-12.html"}, {"id": 13, "title": "参考设计与功能模块推荐", "description": "检索参考设计、KiCad 工程和模块库，评估复用比例。", "category": "需求与方案", "icon": "reuse", "url": "./agents/agent-13.html"}, {"id": 14, "title": "元器件选型优化", "description": "按性能、价格、库存、生命周期、功耗和封装进行多目标排序。", "category": "需求与方案", "icon": "selection", "url": "./agents/agent-14.html"}, {"id": 15, "title": "接口、电源与兼容性检查", "description": "检查电压、电平、协议、时钟、带宽、Pin Mux 和物理连接。", "category": "需求与方案", "icon": "compatibility", "url": "./agents/agent-15.html"}, {"id": 16, "title": "KiCad / EDA 工程解析", "description": "把原理图、PCB、BOM、层叠和库关系解析为统一工程 IR。", "category": "EDA 工程", "icon": "eda", "url": "./agents/agent-16.html"}, {"id": 17, "title": "PDF / 图片原理图识别", "description": "从扫描图、PDF 和截图中识别元件、网络和标注。", "category": "EDA 工程", "icon": "vision", "url": "./agents/agent-17.html"}, {"id": 18, "title": "Netlist 重建", "description": "从识别结果或旧设计中重建连接关系，并管理歧义。", "category": "EDA 工程", "icon": "netlist", "url": "./agents/agent-18.html"}, {"id": 19, "title": "KiCad MCP 执行", "description": "受控执行 KiCad 修改、导出、校验、回读和回滚。", "category": "EDA 工程", "icon": "terminal", "url": "./agents/agent-19.html"}, {"id": 20, "title": "EDA 库依赖与 Pin-Pad 校验", "description": "检查 Symbol、Footprint、3D、Pin-Pad 和库版本依赖。", "category": "EDA 工程", "icon": "library", "url": "./agents/agent-20.html"}, {"id": 21, "title": "固件与驱动框架生成", "description": "生成 BSP、驱动、协议、Pin Mux、日志和工程骨架。", "category": "EDA 工程", "icon": "code", "url": "./agents/agent-21.html"}, {"id": 22, "title": "ERC 与 AI 原理图审查", "description": "结合规则和 AI 检查保护、去耦、额定值、连接与设计风险。", "category": "EDA 工程", "icon": "review", "url": "./agents/agent-22.html"}, {"id": 23, "title": "电路仿真与结果解读", "description": "组织仿真条件、波形、容差和故障签名，并解释结果。", "category": "EDA 工程", "icon": "simulation", "url": "./agents/agent-23.html"}, {"id": 24, "title": "PCB 约束提取", "description": "从器件、接口和工厂能力生成层叠、阻抗、间距与布局布线约束。", "category": "PCB 设计制造", "icon": "constraints", "url": "./agents/agent-24.html"}, {"id": 25, "title": "PCB 初步布局", "description": "完成分区、关键器件摆放、连接器固定与可布线性评估。", "category": "PCB 设计制造", "icon": "placement", "url": "./agents/agent-25.html"}, {"id": 26, "title": "PCB 自动布线", "description": "按关键网络、差分、时钟、电源和回流路径执行受控布线。", "category": "PCB 设计制造", "icon": "routing", "url": "./agents/agent-26.html"}, {"id": 27, "title": "DRC / SI / PI / EMC 审查", "description": "检查设计规则、信号完整性、电源完整性、EMC 和回流路径。", "category": "PCB 设计制造", "icon": "shield", "url": "./agents/agent-27.html"}, {"id": 28, "title": "3D 与机械干涉", "description": "检查板框、器件高度、连接器、外壳、螺柱和装配空间。", "category": "PCB 设计制造", "icon": "mechanical", "url": "./agents/agent-28.html"}, {"id": 29, "title": "生产文件生成", "description": "生成并校验 Gerber、Drill、BOM、CPL、装配图和钢网文件。", "category": "PCB 设计制造", "icon": "manufacturing", "url": "./agents/agent-29.html"}, {"id": 30, "title": "DFM / DFA 制造可行性", "description": "检查线宽间距、孔径、阻焊桥、拼板、贴装方向和装配风险。", "category": "PCB 设计制造", "icon": "dfm", "url": "./agents/agent-30.html"}, {"id": 31, "title": "BOM 接入与标准化", "description": "清洗 BOM、统一字段、拆分型号并建立证据与版本。", "category": "BOM / 供应链 / 采购", "icon": "bom", "url": "./agents/agent-31.html"}, {"id": 32, "title": "MPN 精准匹配", "description": "把模糊型号映射到精确 Manufacturer Part Number 和订货型号。", "category": "BOM / 供应链 / 采购", "icon": "match", "url": "./agents/agent-32.html"}, {"id": 33, "title": "器件替代推荐", "description": "在缺货、降本、EOL 或第二来源场景下推荐可验证替代料。", "category": "BOM / 供应链 / 采购", "icon": "alternative", "url": "./agents/agent-33.html"}, {"id": 34, "title": "生命周期 / EOL / PCN", "description": "跟踪 Active、NRND、EOL、PCN、PDN 和长期供货风险。", "category": "BOM / 供应链 / 采购", "icon": "lifecycle", "url": "./agents/agent-34.html"}, {"id": 35, "title": "合规、原产地与关税", "description": "管理 RoHS、REACH、原产地、出口限制和关税相关信息。", "category": "BOM / 供应链 / 采购", "icon": "compliance", "url": "./agents/agent-35.html"}, {"id": 36, "title": "实时价格与库存", "description": "接入授权分销商价格、库存、MOQ、SPQ、区域和交期快照。", "category": "BOM / 供应链 / 采购", "icon": "price", "url": "./agents/agent-36.html"}, {"id": 37, "title": "BOM 风险与多源供应", "description": "分析单一来源、生命周期、区域和交期风险，构建多源策略。", "category": "BOM / 供应链 / 采购", "icon": "risk", "url": "./agents/agent-37.html"}, {"id": 38, "title": "MOQ / SPQ / 采购包优化", "description": "优化采购批量、包装、超买、分单和供应商组合。", "category": "BOM / 供应链 / 采购", "icon": "optimize", "url": "./agents/agent-38.html"}, {"id": 39, "title": "成本、报价与利润", "description": "计算有效成本、加工费用、报价、毛利和敏感性。", "category": "BOM / 供应链 / 采购", "icon": "cost", "url": "./agents/agent-39.html"}, {"id": 40, "title": "采购计划与缺料协同", "description": "生成采购建议、Need-by、缺料预警、替代和协同任务。", "category": "BOM / 供应链 / 采购", "icon": "procurement", "url": "./agents/agent-40.html"}, {"id": 41, "title": "库存复用与呆滞料", "description": "识别可复用库存、过剩料、呆滞料和跨项目调拨机会。", "category": "BOM / 供应链 / 采购", "icon": "inventory", "url": "./agents/agent-41.html"}, {"id": 42, "title": "物料与批次追溯", "description": "跟踪 Lot、Date Code、序列号、库存、供应商和使用去向。", "category": "BOM / 供应链 / 采购", "icon": "traceability", "url": "./agents/agent-42.html"}, {"id": 43, "title": "EBOM / MBOM 与 NPI 转换", "description": "把工程 BOM 转为制造 BOM、工艺路线、替代和装配版本。", "category": "BOM / 供应链 / 采购", "icon": "npi", "url": "./agents/agent-43.html"}, {"id": 44, "title": "PCB / SMT 制造询价与下单", "description": "生成工厂 RFQ、能力匹配、报价比较和受控下单包。", "category": "BOM / 供应链 / 采购", "icon": "rfq", "url": "./agents/agent-44.html"}, {"id": 45, "title": "来料、生产与测试质量", "description": "管理 IQC、生产测试、良率、不良、返工和质量证据。", "category": "BOM / 供应链 / 采购", "icon": "quality", "url": "./agents/agent-45.html"}, {"id": 46, "title": "LabSight 现场调试", "description": "融合摄像头、语音、示波器、逻辑分析仪、DMM 和串口日志。", "category": "调试与变更闭环", "icon": "labsight", "url": "./agents/agent-46.html"}, {"id": 47, "title": "工程变更与问题闭环", "description": "完成 ECN/ECO、版本影响、库存/WIP 处置、8D、PDCA 和知识回写。", "category": "调试与变更闭环", "icon": "change", "url": "./agents/agent-47.html"}];
+const categories = [
+  {name:"全部", color:"#246bfd"},
+  {name:"器件与资产", color:"#246bfd"},
+  {name:"需求与方案", color:"#13a86b"},
+  {name:"EDA 工程", color:"#7757f5"},
+  {name:"PCB 设计制造", color:"#ff7a21"},
+  {name:"BOM / 供应链 / 采购", color:"#04a6b3"},
+  {name:"调试与变更闭环", color:"#f0445e"}
+];
+const catColor = Object.fromEntries(categories.map(c=>[c.name,c.color]));
+let state = {category:"全部", query:"", sort:"number"};
+let selected = JSON.parse(localStorage.getItem("eeagent-workflow")||"[]");
+let favorites = JSON.parse(localStorage.getItem("eeagent-favorites")||"[]");
+let currentAgent = null;
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+function iconSvg(kind){
+  const common = 'viewBox="0 0 24 24" aria-hidden="true"';
+  const icons = {
+    datasheet:'<path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/>',
+    pdf:'<path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M8 14h2a2 2 0 0 0 0-4H8v7M13 10v7M13 10h2M13 14h2"/>',
+    schema:'<circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M8 6.5 11 17M16 6.5 13 17M8 5h8"/>',
+    locate:'<circle cx="12" cy="12" r="7"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>',
+    parameter:'<path d="M4 7h10M4 17h16M10 12h10"/><circle cx="17" cy="7" r="2"/><circle cx="7" cy="12" r="2"/>',
+    package:'<path d="M8 8h8v8H8zM3 10h5M16 10h5M3 14h5M16 14h5M10 3v5M14 3v5M10 16v5M14 16v5"/>',
+    evidence:'<path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m8.5 12 2.3 2.3 4.7-5"/>',
+    symbol:'<path d="M6 4h12v16H6zM2 8h4M2 12h4M2 16h4M18 8h4M18 12h4M18 16h4"/><path d="M9 8h6M9 12h6M9 16h6"/>',
+    cube:'<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/>',
+    requirements:'<path d="M6 4h12v16H6z"/><path d="m9 9 1 1 2-2M9 14l1 1 2-2M14 9h2M14 14h2"/>',
+    milestone:'<path d="M5 4v16M5 7h10l-2 3 2 3H5"/><circle cx="5" cy="20" r="1.5"/>',
+    architecture:'<rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="4" width="6" height="5" rx="1"/><rect x="9" y="15" width="6" height="5" rx="1"/><path d="M6 9v3h12V9M12 12v3"/>',
+    reuse:'<path d="M8 7a5 5 0 0 1 8-2l2 2M16 17a5 5 0 0 1-8 2l-2-2"/><path d="M18 3v4h-4M6 21v-4h4"/>',
+    selection:'<path d="M5 4h14l-5 6v6l-4 3v-9z"/><path d="m15 4 2 2 3-3"/>',
+    compatibility:'<path d="M8 5h3v5H8zM13 14h3v5h-3z"/><path d="M11 7h4a3 3 0 0 1 3 3v1M13 17H9a3 3 0 0 1-3-3v-1"/>',
+    eda:'<path d="M4 4h16v16H4zM8 8h8v8H8z"/><path d="M2 9h2M2 15h2M20 9h2M20 15h2M9 2v2M15 2v2M9 20v2M15 20v2"/>',
+    vision:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m5 16 4-4 3 3 2-2 5 3"/><circle cx="15.5" cy="9" r="1.5"/>',
+    netlist:'<circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="m7 7 4 9M17 7l-4 9M7 6h10"/>',
+    terminal:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/>',
+    library:'<path d="M4 5h5v14H4zM10 5h5v14h-5zM16 5h4v14h-4z"/><path d="M5 8h3M11 12h3M17 9h2"/>',
+    code:'<path d="m9 7-5 5 5 5M15 7l5 5-5 5M13 5l-2 14"/>',
+    review:'<path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m8 12 2.5 2.5L16 9"/>',
+    simulation:'<path d="M3 13h4l2-7 4 12 2-7h6"/>',
+    constraints:'<path d="M4 6h16M4 18h16M7 3v6M17 15v6M8 12h8"/><path d="m10 10-2 2 2 2M14 10l2 2-2 2"/>',
+    placement:'<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><path d="M13 7h4v4"/>',
+    routing:'<circle cx="5" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 5h5v6h5v6M5 7v10h8"/>',
+    shield:'<path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8 12h8M12 8v8"/>',
+    mechanical:'<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="M7 9.5 12 12l5-2.5M12 12v9"/>',
+    manufacturing:'<path d="M4 20V8l5 3V8l5 3V5h6v15z"/><path d="M7 16h2M12 16h2M17 16h2"/>',
+    dfm:'<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h5M8 16h8"/><path d="m15 11 1.5 1.5L19 10"/>',
+    bom:'<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/><circle cx="16" cy="16" r="2"/>',
+    match:'<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5M7 10h6M10 7v6"/>',
+    alternative:'<path d="M4 7h10l-2-2M14 7l-2 2M20 17H10l2-2M10 17l2 2"/><path d="M6 7v6a4 4 0 0 0 4 4M18 17v-6a4 4 0 0 0-4-4"/>',
+    lifecycle:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2M8 3l-2 3M16 3l2 3"/>',
+    compliance:'<path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m8.5 12 2.3 2.3 4.7-5"/>',
+    price:'<path d="M12 3v18M16 7.5c0-1.4-1.8-2.5-4-2.5S8 6.1 8 7.5s1.8 2.5 4 2.5 4 1.1 4 2.5-1.8 2.5-4 2.5-4-1.1-4-2.5"/>',
+    risk:'<path d="M12 3 21 20H3z"/><path d="M12 9v5M12 17h.01"/>',
+    optimize:'<path d="M4 6h8M16 6h4M4 12h4M12 12h8M4 18h10M18 18h2"/><circle cx="14" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="16" cy="18" r="2"/>',
+    cost:'<path d="M5 20V10M12 20V4M19 20v-7"/><path d="M3 20h18"/>',
+    procurement:'<path d="M3 5h2l2 10h10l2-7H7M9 19h.01M17 19h.01"/>',
+    inventory:'<path d="m12 3 8 4-8 4-8-4zM4 7v10l8 4 8-4V7M12 11v10"/>',
+    traceability:'<circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M8 6h8M7 8l4 8M17 8l-4 8"/>',
+    npi:'<path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="M15 16h5M18 13l2 3-2 3"/>',
+    rfq:'<path d="M4 4h16v16H4z"/><path d="M7 8h10M7 12h5M7 16h4"/><path d="M16 13v6M13 16h6"/>',
+    quality:'<path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8 12h3l1.5-3 2 6 1.5-3H19"/>',
+    labsight:'<path d="M3 13h4l2-7 4 12 2-7h6"/><circle cx="18" cy="6" r="2"/><path d="M16.5 7.5 14 10"/>',
+    change:'<path d="M5 7a8 8 0 0 1 13-2l2 2M19 17a8 8 0 0 1-13 2l-2-2"/><path d="M20 3v4h-4M4 21v-4h4"/>'
+  };
+  return `<svg ${common}>${icons[kind]||icons.eda}</svg>`;
+}
+
+function renderFilters(){
+  $("#filters").innerHTML = categories.map(c=>`<button class="filter-chip ${state.category===c.name?'active':''}" data-cat="${c.name}"><span style="color:${c.color}">●</span>${c.name}</button>`).join("");
+  $$(".filter-chip").forEach(b=>b.onclick=()=>{state.category=b.dataset.cat;render();});
+}
+
+function filteredAgents(){
+  const q=state.query.trim().toLowerCase();
+  let list=agents.filter(a=>{
+    const inCat=state.category==="全部"||a.category===state.category;
+    const hay=`${a.id} ${a.title} ${a.description} ${a.category}`.toLowerCase();
+    return inCat && (!q||hay.includes(q));
+  });
+  if(state.sort==="title") list.sort((a,b)=>a.title.localeCompare(b.title,"zh-CN"));
+  else if(state.sort==="category") list.sort((a,b)=>a.category.localeCompare(b.category,"zh-CN")||a.id-b.id);
+  else list.sort((a,b)=>a.id-b.id);
+  return list;
+}
+function cardHtml(a){
+  const sel=selected.includes(a.id), fav=favorites.includes(a.id), color=catColor[a.category];
+  return `<article class="card" style="--cat:${color}" data-agent="${a.id}">
+    <div class="card-top"><div class="agent-icon">${iconSvg(a.icon)}</div><span class="card-num">Agent ${String(a.id).padStart(2,"0")}</span></div>
+    <h3>${a.title}</h3><p>${a.description}</p>
+    <div class="card-actions"><button class="text-btn view-btn">查看详情 →</button>
+      <div class="mini-actions">
+        <button class="mini-btn favorite ${fav?'active':''}" title="收藏">☆</button>
+        <button class="mini-btn add ${sel?'active':''}" title="加入工作流">${sel?'✓':'＋'}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function render(){
+  renderFilters();
+  const list=filteredAgents();
+  const groups={};
+  list.forEach(a=>(groups[a.category]??=[]).push(a));
+  let html="";
+  categories.slice(1).forEach(c=>{
+    if(!groups[c.name]?.length)return;
+    html+=`<section class="category-section" style="--cat:${c.color}">
+      <h2 class="category-title"><span class="category-dot"></span>${c.name}<small style="color:var(--muted);font-size:13px;font-weight:500">(${groups[c.name].length})</small></h2>
+      <div class="agent-grid">${groups[c.name].map(cardHtml).join("")}</div></section>`;
+  });
+  $("#sections").innerHTML=html;
+  $("#emptyState").style.display=list.length?"none":"block";
+  $("#resultSummary").textContent=`显示 ${list.length} 个智能体`;
+  bindCards(); updateWorkflowBar();
+}
+function bindCards(){
+  $$(".card").forEach(card=>{
+    const id=+card.dataset.agent;
+    card.querySelector(".view-btn").onclick=()=>openAgent(id);
+    card.ondblclick=()=>openAgent(id);
+    card.querySelector(".add").onclick=(e)=>{e.stopPropagation();toggleSelected(id);};
+    card.querySelector(".favorite").onclick=(e)=>{e.stopPropagation();toggleFavorite(id);};
+  });
+}
+function openAgent(id){
+  const a=agents.find(x=>x.id===id); currentAgent=a;
+  $("#modalIcon").innerHTML=iconSvg(a.icon);
+  $("#modalIcon").style.color=catColor[a.category];
+  $("#modalIcon").style.background=`color-mix(in srgb, ${catColor[a.category]} 12%, var(--panel))`;
+  $("#modalMeta").textContent=`Agent ${String(a.id).padStart(2,"0")} · ${a.category}`;
+  $("#modalTitle").textContent=a.title;
+  $("#modalDescription").textContent=a.description+" 本页面为交互式产品原型，后续可把详情、输入输出、权限、运行状态和真实路由接入 ezPLM / EEAgent 后端。";
+  $("#modalTags").innerHTML=[a.category,"可编排","可追踪","版本化"].map(t=>`<span class="tag">${t}</span>`).join("");
+  $("#modalAdd").textContent=selected.includes(a.id)?"从工作流移除":"加入工作流";
+  $("#modalAdd").onclick=()=>{toggleSelected(a.id);openAgent(a.id)};
+  $("#modalLink").href=a.url;
+  $("#modalLink").onclick=e=>{e.preventDefault();toast(`已预留链接：${a.url}`)};
+  $("#agentModal").classList.add("show");
+}
+function toggleSelected(id){
+  selected=selected.includes(id)?selected.filter(x=>x!==id):[...selected,id];
+  localStorage.setItem("eeagent-workflow",JSON.stringify(selected));render();
+}
+function toggleFavorite(id){
+  favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+  localStorage.setItem("eeagent-favorites",JSON.stringify(favorites));render();
+}
+function updateWorkflowBar(){
+  $("#workflowCount").textContent=`已选择 ${selected.length} 个智能体`;
+  $("#workflowBar").classList.toggle("show",selected.length>0);
+}
+function renderWorkflow(){
+  const list=selected.map(id=>agents.find(a=>a.id===id)).filter(Boolean);
+  $("#workflowList").innerHTML=list.length?list.map((a,i)=>`<div class="workflow-item">
+    <span class="order">${i+1}</span><div><b>${a.title}</b><small>Agent ${a.id} · ${a.category}</small></div>
+    <div class="workflow-actions"><button data-move="-1" data-id="${a.id}" ${i===0?'disabled':''}>↑</button><button data-move="1" data-id="${a.id}" ${i===list.length-1?'disabled':''}>↓</button><button data-remove="${a.id}">×</button></div>
+  </div>`).join(""):`<div class="empty" style="display:block;padding:40px">尚未选择智能体。</div>`;
+  $$("[data-move]").forEach(b=>b.onclick=()=>moveItem(+b.dataset.id,+b.dataset.move));
+  $$("[data-remove]").forEach(b=>b.onclick=()=>{toggleSelected(+b.dataset.remove);renderWorkflow();});
+}
+function moveItem(id,delta){
+  const i=selected.indexOf(id),j=i+delta;if(j<0||j>=selected.length)return;
+  [selected[i],selected[j]]=[selected[j],selected[i]];
+  localStorage.setItem("eeagent-workflow",JSON.stringify(selected));renderWorkflow();
+}
+function workflowPayload(){
+  return {
+    name:"未命名电子工程工作流",
+    createdAt:new Date().toISOString(),
+    agents:selected.map((id,index)=>{const a=agents.find(x=>x.id===id);return {order:index+1,id:a.id,title:a.title,url:a.url};})
+  }
+}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove("show"),2200)}
+function downloadJson(){
+  const blob=new Blob([JSON.stringify(workflowPayload(),null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="eeagent-workflow.json";a.click();URL.revokeObjectURL(url);
+}
+function close(type){if(type==="modal")$("#agentModal").classList.remove("show");else $("#workflowDrawer").classList.remove("show")}
+$$("[data-close]").forEach(x=>x.onclick=()=>close(x.dataset.close));
+$("#searchInput").oninput=e=>{state.query=e.target.value;render()};
+$("#sortSelect").onchange=e=>{state.sort=e.target.value;render()};
+$("#clearBtn").onclick=()=>{state={category:"全部",query:"",sort:"number"};$("#searchInput").value="";$("#sortSelect").value="number";render()};
+$("#openWorkflow").onclick=()=>{$("#workflowDrawer").classList.add("show");renderWorkflow()};
+$("#newWorkflowTop").onclick=()=>{$("#workflowDrawer").classList.add("show");renderWorkflow()};
+$("#clearWorkflow").onclick=()=>{selected=[];localStorage.setItem("eeagent-workflow","[]");render();renderWorkflow()};
+$("#downloadWorkflow").onclick=downloadJson;
+$("#copyWorkflow").onclick=async()=>{await navigator.clipboard.writeText(JSON.stringify(workflowPayload(),null,2));toast("工作流 JSON 已复制")};
+$("#themeBtn").onclick=()=>{
+  const next=document.documentElement.dataset.theme==="dark"?"light":"dark";
+  document.documentElement.dataset.theme=next;localStorage.setItem("eeagent-theme",next);
+};
+document.documentElement.dataset.theme=localStorage.getItem("eeagent-theme")||"light";
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#agentModal").classList.remove("show");$("#workflowDrawer").classList.remove("show")}});
+render();
+
+// ===== EEAgent mobile helpers =====
+let eeagentDeferredInstall = null;
+function mobileSetActive(action){
+  document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.mobileAction===action));
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();eeagentDeferredInstall=e;
+  const banner=document.getElementById('mobileInstall');if(banner)banner.classList.add('show');
+});
+window.addEventListener('appinstalled',()=>document.getElementById('mobileInstall')?.classList.remove('show'));
+document.getElementById('mobileInstallBtn')?.addEventListener('click',async()=>{
+  if(!eeagentDeferredInstall){toast('请使用浏览器菜单中的“添加到主屏幕”');return;}
+  eeagentDeferredInstall.prompt();await eeagentDeferredInstall.userChoice;eeagentDeferredInstall=null;
+  document.getElementById('mobileInstall')?.classList.remove('show');
+});
+document.querySelector('.mobile-bottom-nav')?.addEventListener('click',e=>{
+  const btn=e.target.closest('.mobile-nav-btn');if(!btn)return;
+  const action=btn.dataset.mobileAction;
+  if(action==='all'){
+    state.category='全部';state.query='';document.getElementById('searchInput').value='';render();mobileSetActive('all');scrollTo({top:0,behavior:'smooth'});
+  }else if(action==='favorites'){
+    const favoriteAgents=agents.filter(a=>favorites.includes(a.id));
+    document.getElementById('sections').innerHTML=`<section class="category-section" style="--cat:#f0a000"><h2 class="category-title"><span class="category-dot"></span>我的收藏 <small style="color:var(--muted);font-size:13px;font-weight:500">(${favoriteAgents.length})</small></h2><div class="agent-grid">${favoriteAgents.map(cardHtml).join('')}</div></section>`;
+    document.getElementById('emptyState').style.display=favoriteAgents.length?'none':'block';
+    document.getElementById('resultSummary').textContent=`收藏 ${favoriteAgents.length} 个智能体`;bindCards();mobileSetActive('favorites');scrollTo({top:0,behavior:'smooth'});
+  }else if(action==='workflow'){
+    document.getElementById('workflowDrawer').classList.add('show');renderWorkflow();mobileSetActive('workflow');
+  }else if(action==='theme'){
+    document.getElementById('themeBtn').click();mobileSetActive('theme');
+  }
+});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+</script>
+</body>
+</html>

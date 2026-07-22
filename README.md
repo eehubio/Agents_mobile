@@ -68,3 +68,22 @@ Android：Chrome 打开后，点菜单→“安装应用”或“添加到主屏
 - 加载成功后显式设置 `style.display = "none"` 并清空占位内容；
 - 加载开始和失败时再显式恢复为 `display:grid`；
 - Service Worker 缓存升级为 `eeagent-mobile-v6-docs`。
+
+
+## V7：空白首页修复
+
+V6 的 Markdown Reader DOM 在工作流布局调整时被误删，导致：
+
+```text
+Cannot set properties of null (setting 'onclick')
+```
+
+脚本在首页 `render()` 之前停止，所以卡片区域为空。
+
+V7：
+
+- 恢复完整 Markdown Reader DOM；
+- 文档控件使用容错初始化；
+- Escape 和可选按钮绑定使用空值保护；
+- 增加启动错误提示；
+- 缓存升级为 `eeagent-mobile-v7-docs`。

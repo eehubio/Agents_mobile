@@ -323,6 +323,11 @@ body.workflow-overlay-open .mobile-bottom-nav{
   overflow:hidden!important;
 }
 
+
+.app-boot-error{display:none;margin:12px auto;padding:12px 14px;width:min(1440px,calc(100% - 40px));border:1px solid #efaaaa;background:#fff1f1;color:#8a2020;border-radius:12px;font-size:13px;line-height:1.55}
+.app-boot-error.show{display:block}
+@media(max-width:580px){.app-boot-error{width:calc(100% - 24px)}}
+
 </style>
 </head>
 <body>
@@ -365,6 +370,7 @@ body.workflow-overlay-open .mobile-bottom-nav{
   </div>
 </section>
 
+<div class="app-boot-error" id="appBootError"></div>
 <main class="main" id="agents">
   <section class="toolbar">
     <div class="filter-row" id="filters"></div>
@@ -454,6 +460,44 @@ body.workflow-overlay-open .mobile-bottom-nav{
   </aside>
 </div>
 
+<div class="doc-reader" id="docReader" aria-hidden="true">
+  <header class="doc-reader-header">
+    <div class="doc-reader-top">
+      <button class="doc-reader-back" id="docBackBtn" aria-label="返回">‹</button>
+      <div class="doc-reader-title"><b id="docTitle">设计方案</b><span id="docMeta"></span></div>
+      <div class="doc-reader-actions">
+        <button id="docSearchBtn" title="文内搜索">⌕</button>
+        <button id="docFontBtn" title="调整字号">Aa</button>
+        <button id="docTocBtn" title="目录">☰</button>
+        <button id="docDownloadBtn" title="下载 Markdown">↓</button>
+      </div>
+    </div>
+    <div class="doc-search-row" id="docSearchRow">
+      <input class="doc-search-input" id="docSearchInput" placeholder="搜索当前设计方案…">
+      <button id="docSearchPrev">↑</button>
+      <button id="docSearchNext">↓</button>
+      <button id="docSearchCount">0 / 0</button>
+    </div>
+    <div class="doc-offline-banner" id="docOfflineBanner"><b>离线可用</b>：47 份设计方案已包含在 PWA 缓存中。</div>
+    <div class="doc-progress-track"><div class="doc-progress-bar" id="docProgressBar"></div></div>
+  </header>
+  <div class="doc-reader-layout">
+    <div class="doc-reader-scroll" id="docReaderScroll">
+      <div class="doc-reader-container">
+        <div class="doc-reader-source" id="docSourceInfo"></div>
+        <div class="doc-reader-state" id="docLoading"><div><b>正在加载设计方案</b><span>Markdown 将在手机上转换为易读页面。</span></div></div>
+        <article class="markdown-body" id="markdownBody" hidden></article>
+        <div class="doc-reader-nav" id="docReaderNav" hidden></div>
+      </div>
+    </div>
+    <div class="doc-toc-backdrop" id="docTocBackdrop"></div>
+    <aside class="doc-toc" id="docToc">
+      <div class="doc-toc-head"><b>文档目录</b><button class="icon-btn" id="docTocClose">×</button></div>
+      <div class="doc-toc-list" id="docTocList"></div>
+    </aside>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 
@@ -470,12 +514,26 @@ body.workflow-overlay-open .mobile-bottom-nav{
 
 <footer>
   <div class="footer-inner">
-    <div><b>EEAgent</b> · 电子工程 AI 协同平台 · <b>V6</b></div>
+    <div><b>EEAgent</b> · 电子工程 AI 协同平台 · <b>V7</b></div>
     <div>47 份智能体设计方案已经与卡片关联，可在线阅读并下载 Markdown。</div>
   </div>
 </footer>
 
 <script>
+function showBootError(message){
+  const banner=document.getElementById("appBootError");
+  if(!banner)return;
+  banner.textContent=`页面初始化遇到问题：${message}。请点击右上角 ↻ 刷新到最新版。`;
+  banner.classList.add("show");
+}
+window.addEventListener("error",event=>{
+  console.error("EEAgent boot error",event.error||event.message);
+  showBootError(event.message||"未知脚本错误");
+});
+window.addEventListener("unhandledrejection",event=>{
+  console.error("EEAgent unhandled rejection",event.reason);
+  showBootError(event.reason?.message||String(event.reason||"异步加载错误"));
+});
 const agents = [{"id": 1, "title": "Datasheet 资产接入", "description": "接入厂商页面、PDF、图片与已有器件资料，建立可追踪的数据源。", "category": "器件与资产", "icon": "datasheet", "url": "./agents/agent-1.html", "doc": "./docs/agent-01.md", "docSource": "datasheet_asset_ingestion_agent_codex_spec.md", "docBytes": 33117}, {"id": 2, "title": "PDF 解析与 OCR 路由", "description": "识别数据手册版式，按文本、表格、图片和扫描页选择解析策略。", "category": "器件与资产", "icon": "pdf", "url": "./agents/agent-2.html", "doc": "./docs/agent-02.md", "docSource": "pdf_parsing_ocr_router_agent_codex_spec.md", "docBytes": 65195}, {"id": 3, "title": "器件分类与 Schema 路由", "description": "将器件归入正确分类，并匹配对应参数模板与抽取规则。", "category": "器件与资产", "icon": "schema", "url": "./agents/agent-3.html", "doc": "./docs/agent-03.md", "docSource": "component_classification_schema_router_agent_codex_spec.md", "docBytes": 56532}, {"id": 4, "title": "管脚、表格与图片定位", "description": "定位 Pin 表、参数表、框图、封装图和应用电路等关键区域。", "category": "器件与资产", "icon": "locate", "url": "./agents/agent-4.html", "doc": "./docs/agent-04.md", "docSource": "datasheet_structure_visual_locator_agent_codex_spec.md", "docBytes": 63989}, {"id": 5, "title": "参数抽取与单位归一", "description": "抽取关键参数，处理 Min/Typ/Max、条件、单位和证据锚点。", "category": "器件与资产", "icon": "parameter", "url": "./agents/agent-5.html", "doc": "./docs/agent-05.md", "docSource": "parameter_extraction_unit_normalization_agent_codex_spec.md", "docBytes": 70877}, {"id": 6, "title": "引脚、封装与订货型号", "description": "解析 Pin、Package、Ordering Code 与不同温度/速度等级。", "category": "器件与资产", "icon": "package", "url": "./agents/agent-6.html", "doc": "./docs/agent-06.md", "docSource": "pin_package_ordering_agent_codex_spec.md", "docBytes": 51994}, {"id": 7, "title": "证据锚定与人工审核", "description": "把结构化结果绑定原文位置，支持人工复核、修订与回写。", "category": "器件与资产", "icon": "evidence", "url": "./agents/agent-7.html", "doc": "./docs/agent-07.md", "docSource": "evidence_anchoring_human_review_agent_codex_spec.md", "docBytes": 48801}, {"id": 8, "title": "KiCad 原理图符号生成", "description": "根据器件 Pin 定义生成 KiCad 符号，并做电气类型检查。", "category": "器件与资产", "icon": "symbol", "url": "./agents/agent-8.html", "doc": "./docs/agent-08.md", "docSource": "kicad_symbol_generation_agent_codex_spec.md", "docBytes": 63250}, {"id": 9, "title": "封装、3D 与库资产生成", "description": "生成或匹配 Footprint、3D、Pin-Pad 映射和库版本信息。", "category": "器件与资产", "icon": "cube", "url": "./agents/agent-9.html", "doc": "./docs/agent-09.md", "docSource": "kicad_footprint_3d_mapping_agent_codex_spec.md", "docBytes": 66634}, {"id": 10, "title": "工程需求结构化", "description": "将自然语言、PRD、图片和客户需求转为结构化工程约束。", "category": "需求与方案", "icon": "requirements", "url": "./agents/agent-10.html", "doc": "./docs/agent-10.md", "docSource": "engineering_requirements_structuring_agent_codex_spec.md", "docBytes": 90680}, {"id": 11, "title": "项目拆解与里程碑", "description": "拆解硬件、固件、结构、测试、采购和制造任务与依赖。", "category": "需求与方案", "icon": "milestone", "url": "./agents/agent-11.html", "doc": "./docs/agent-11.md", "docSource": "project_decomposition_milestone_orchestration_agent_codex_spec.md", "docBytes": 115919}, {"id": 12, "title": "功能架构与框图", "description": "生成系统框图、电源树、数据流、控制流和模块接口。", "category": "需求与方案", "icon": "architecture", "url": "./agents/agent-12.html", "doc": "./docs/agent-12.md", "docSource": "functional_architecture_block_diagram_agent_codex_spec.md", "docBytes": 116551}, {"id": 13, "title": "参考设计与功能模块推荐", "description": "检索参考设计、KiCad 工程和模块库，评估复用比例。", "category": "需求与方案", "icon": "reuse", "url": "./agents/agent-13.html", "doc": "./docs/agent-13.md", "docSource": "reference_design_function_module_recommendation_agent_codex_spec.md", "docBytes": 124884}, {"id": 14, "title": "元器件选型优化", "description": "按性能、价格、库存、生命周期、功耗和封装进行多目标排序。", "category": "需求与方案", "icon": "selection", "url": "./agents/agent-14.html", "doc": "./docs/agent-14.md", "docSource": "component_selection_optimization_agent_codex_spec.md", "docBytes": 134681}, {"id": 15, "title": "接口、电源与兼容性检查", "description": "检查电压、电平、协议、时钟、带宽、Pin Mux 和物理连接。", "category": "需求与方案", "icon": "compatibility", "url": "./agents/agent-15.html", "doc": "./docs/agent-15.md", "docSource": "interface_power_compatibility_agent_codex_spec.md", "docBytes": 125033}, {"id": 16, "title": "KiCad / EDA 工程解析", "description": "把原理图、PCB、BOM、层叠和库关系解析为统一工程 IR。", "category": "EDA 工程", "icon": "eda", "url": "./agents/agent-16.html", "doc": "./docs/agent-16.md", "docSource": "kicad_eda_project_parser_agent_codex_spec.md", "docBytes": 88061}, {"id": 17, "title": "PDF / 图片原理图识别", "description": "从扫描图、PDF 和截图中识别元件、网络和标注。", "category": "EDA 工程", "icon": "vision", "url": "./agents/agent-17.html", "doc": "./docs/agent-17.md", "docSource": "pdf_image_schematic_recognition_agent_codex_spec.md", "docBytes": 81610}, {"id": 18, "title": "Netlist 重建", "description": "从识别结果或旧设计中重建连接关系，并管理歧义。", "category": "EDA 工程", "icon": "netlist", "url": "./agents/agent-18.html", "doc": "./docs/agent-18.md", "docSource": "netlist_reconstruction_agent_codex_spec.md", "docBytes": 92522}, {"id": 19, "title": "KiCad MCP 执行", "description": "受控执行 KiCad 修改、导出、校验、回读和回滚。", "category": "EDA 工程", "icon": "terminal", "url": "./agents/agent-19.html", "doc": "./docs/agent-19.md", "docSource": "kicad_mcp_execution_agent_codex_spec.md", "docBytes": 95296}, {"id": 20, "title": "EDA 库依赖与 Pin-Pad 校验", "description": "检查 Symbol、Footprint、3D、Pin-Pad 和库版本依赖。", "category": "EDA 工程", "icon": "library", "url": "./agents/agent-20.html", "doc": "./docs/agent-20.md", "docSource": "eda_library_dependency_pin_pad_validation_agent_codex_spec.md", "docBytes": 98659}, {"id": 21, "title": "固件与驱动框架生成", "description": "生成 BSP、驱动、协议、Pin Mux、日志和工程骨架。", "category": "EDA 工程", "icon": "code", "url": "./agents/agent-21.html", "doc": "./docs/agent-21.md", "docSource": "firmware_driver_framework_generation_agent_codex_spec.md", "docBytes": 98292}, {"id": 22, "title": "ERC 与 AI 原理图审查", "description": "结合规则和 AI 检查保护、去耦、额定值、连接与设计风险。", "category": "EDA 工程", "icon": "review", "url": "./agents/agent-22.html", "doc": "./docs/agent-22.md", "docSource": "erc_ai_schematic_review_agent_codex_spec.md", "docBytes": 93268}, {"id": 23, "title": "电路仿真与结果解读", "description": "组织仿真条件、波形、容差和故障签名，并解释结果。", "category": "EDA 工程", "icon": "simulation", "url": "./agents/agent-23.html", "doc": "./docs/agent-23.md", "docSource": "circuit_simulation_result_interpretation_agent_codex_spec.md", "docBytes": 95985}, {"id": 24, "title": "PCB 约束提取", "description": "从器件、接口和工厂能力生成层叠、阻抗、间距与布局布线约束。", "category": "PCB 设计制造", "icon": "constraints", "url": "./agents/agent-24.html", "doc": "./docs/agent-24.md", "docSource": "pcb_constraint_extraction_agent_codex_spec.md", "docBytes": 107889}, {"id": 25, "title": "PCB 初步布局", "description": "完成分区、关键器件摆放、连接器固定与可布线性评估。", "category": "PCB 设计制造", "icon": "placement", "url": "./agents/agent-25.html", "doc": "./docs/agent-25.md", "docSource": "pcb_preliminary_layout_agent_codex_spec.md", "docBytes": 78228}, {"id": 26, "title": "PCB 自动布线", "description": "按关键网络、差分、时钟、电源和回流路径执行受控布线。", "category": "PCB 设计制造", "icon": "routing", "url": "./agents/agent-26.html", "doc": "./docs/agent-26.md", "docSource": "pcb_automatic_routing_agent_codex_spec.md", "docBytes": 80861}, {"id": 27, "title": "DRC / SI / PI / EMC 审查", "description": "检查设计规则、信号完整性、电源完整性、EMC 和回流路径。", "category": "PCB 设计制造", "icon": "shield", "url": "./agents/agent-27.html", "doc": "./docs/agent-27.md", "docSource": "drc_si_pi_emc_review_agent_codex_spec.md", "docBytes": 96457}, {"id": 28, "title": "3D 与机械干涉", "description": "检查板框、器件高度、连接器、外壳、螺柱和装配空间。", "category": "PCB 设计制造", "icon": "mechanical", "url": "./agents/agent-28.html", "doc": "./docs/agent-28.md", "docSource": "3d_mechanical_interference_agent_codex_spec.md", "docBytes": 105905}, {"id": 29, "title": "生产文件生成", "description": "生成并校验 Gerber、Drill、BOM、CPL、装配图和钢网文件。", "category": "PCB 设计制造", "icon": "manufacturing", "url": "./agents/agent-29.html", "doc": "./docs/agent-29.md", "docSource": "pcb_production_file_generation_agent_codex_spec.md", "docBytes": 106396}, {"id": 30, "title": "DFM / DFA 制造可行性", "description": "检查线宽间距、孔径、阻焊桥、拼板、贴装方向和装配风险。", "category": "PCB 设计制造", "icon": "dfm", "url": "./agents/agent-30.html", "doc": "./docs/agent-30.md", "docSource": "dfm_dfa_manufacturability_agent_codex_spec.md", "docBytes": 105125}, {"id": 31, "title": "BOM 接入与标准化", "description": "清洗 BOM、统一字段、拆分型号并建立证据与版本。", "category": "BOM / 供应链 / 采购", "icon": "bom", "url": "./agents/agent-31.html", "doc": "./docs/agent-31.md", "docSource": "bom_intake_normalization_agent_codex_spec.md", "docBytes": 53348}, {"id": 32, "title": "MPN 精准匹配", "description": "把模糊型号映射到精确 Manufacturer Part Number 和订货型号。", "category": "BOM / 供应链 / 采购", "icon": "match", "url": "./agents/agent-32.html", "doc": "./docs/agent-32.md", "docSource": "mpn_precision_matching_agent_codex_spec.md", "docBytes": 55168}, {"id": 33, "title": "器件替代推荐", "description": "在缺货、降本、EOL 或第二来源场景下推荐可验证替代料。", "category": "BOM / 供应链 / 采购", "icon": "alternative", "url": "./agents/agent-33.html", "doc": "./docs/agent-33.md", "docSource": "component_alternative_recommendation_agent_codex_spec.md", "docBytes": 70022}, {"id": 34, "title": "生命周期 / EOL / PCN", "description": "跟踪 Active、NRND、EOL、PCN、PDN 和长期供货风险。", "category": "BOM / 供应链 / 采购", "icon": "lifecycle", "url": "./agents/agent-34.html", "doc": "./docs/agent-34.md", "docSource": "lifecycle_eol_pcn_agent_codex_spec.md", "docBytes": 57979}, {"id": 35, "title": "合规、原产地与关税", "description": "管理 RoHS、REACH、原产地、出口限制和关税相关信息。", "category": "BOM / 供应链 / 采购", "icon": "compliance", "url": "./agents/agent-35.html", "doc": "./docs/agent-35.md", "docSource": "compliance_origin_tariff_agent_codex_spec.md", "docBytes": 69512}, {"id": 36, "title": "实时价格与库存", "description": "接入授权分销商价格、库存、MOQ、SPQ、区域和交期快照。", "category": "BOM / 供应链 / 采购", "icon": "price", "url": "./agents/agent-36.html", "doc": "./docs/agent-36.md", "docSource": "realtime_pricing_inventory_agent_codex_spec.md", "docBytes": 61989}, {"id": 37, "title": "BOM 风险与多源供应", "description": "分析单一来源、生命周期、区域和交期风险，构建多源策略。", "category": "BOM / 供应链 / 采购", "icon": "risk", "url": "./agents/agent-37.html", "doc": "./docs/agent-37.md", "docSource": "bom_risk_multisourcing_agent_codex_spec.md", "docBytes": 60721}, {"id": 38, "title": "MOQ / SPQ / 采购包优化", "description": "优化采购批量、包装、超买、分单和供应商组合。", "category": "BOM / 供应链 / 采购", "icon": "optimize", "url": "./agents/agent-38.html", "doc": "./docs/agent-38.md", "docSource": "moq_spq_packaging_optimization_agent_codex_spec.md", "docBytes": 72801}, {"id": 39, "title": "成本、报价与利润", "description": "计算有效成本、加工费用、报价、毛利和敏感性。", "category": "BOM / 供应链 / 采购", "icon": "cost", "url": "./agents/agent-39.html", "doc": "./docs/agent-39.md", "docSource": "cost_quote_profit_agent_codex_spec.md", "docBytes": 77618}, {"id": 40, "title": "采购计划与缺料协同", "description": "生成采购建议、Need-by、缺料预警、替代和协同任务。", "category": "BOM / 供应链 / 采购", "icon": "procurement", "url": "./agents/agent-40.html", "doc": "./docs/agent-40.md", "docSource": "procurement_planning_shortage_collaboration_agent_codex_spec.md", "docBytes": 82704}, {"id": 41, "title": "库存复用与呆滞料", "description": "识别可复用库存、过剩料、呆滞料和跨项目调拨机会。", "category": "BOM / 供应链 / 采购", "icon": "inventory", "url": "./agents/agent-41.html", "doc": "./docs/agent-41.md", "docSource": "inventory_reuse_excess_obsolete_agent_codex_spec.md", "docBytes": 83675}, {"id": 42, "title": "物料与批次追溯", "description": "跟踪 Lot、Date Code、序列号、库存、供应商和使用去向。", "category": "BOM / 供应链 / 采购", "icon": "traceability", "url": "./agents/agent-42.html", "doc": "./docs/agent-42.md", "docSource": "material_lot_traceability_agent_codex_spec.md", "docBytes": 69695}, {"id": 43, "title": "EBOM / MBOM 与 NPI 转换", "description": "把工程 BOM 转为制造 BOM、工艺路线、替代和装配版本。", "category": "BOM / 供应链 / 采购", "icon": "npi", "url": "./agents/agent-43.html", "doc": "./docs/agent-43.md", "docSource": "ebom_mbom_npi_conversion_agent_codex_spec.md", "docBytes": 88830}, {"id": 44, "title": "PCB / SMT 制造询价与下单", "description": "生成工厂 RFQ、能力匹配、报价比较和受控下单包。", "category": "BOM / 供应链 / 采购", "icon": "rfq", "url": "./agents/agent-44.html", "doc": "./docs/agent-44.md", "docSource": "pcb_smt_manufacturing_rfq_order_agent_codex_spec.md", "docBytes": 98201}, {"id": 45, "title": "来料、生产与测试质量", "description": "管理 IQC、生产测试、良率、不良、返工和质量证据。", "category": "BOM / 供应链 / 采购", "icon": "quality", "url": "./agents/agent-45.html", "doc": "./docs/agent-45.md", "docSource": "incoming_production_test_quality_agent_codex_spec.md", "docBytes": 94111}, {"id": 46, "title": "LabSight 现场调试", "description": "融合摄像头、语音、示波器、逻辑分析仪、DMM 和串口日志。", "category": "调试与变更闭环", "icon": "labsight", "url": "./agents/agent-46.html", "doc": "./docs/agent-46.md", "docSource": "labsight_field_debugging_agent_codex_spec.md", "docBytes": 133873}, {"id": 47, "title": "工程变更与问题闭环", "description": "完成 ECN/ECO、版本影响、库存/WIP 处置、8D、PDCA 和知识回写。", "category": "调试与变更闭环", "icon": "change", "url": "./agents/agent-47.html", "doc": "./docs/agent-47.md", "docSource": "engineering_change_issue_closure_agent_codex_spec.md", "docBytes": 131703}];
 const categories = [
   {name:"全部", color:"#246bfd"},
@@ -1210,16 +1268,61 @@ function downloadCurrentMarkdown(){
 }
 function handleDocumentHash(){const match=location.hash.match(/^#agent-(\d+)-design$/);if(match){const id=+match[1];if(!$("#docReader").classList.contains("show")||currentDocAgent?.id!==id)openDocument(id,{updateHash:false});}}
 
-$("#docBackBtn").onclick=()=>closeDocument();
-$("#docTocBtn").onclick=showDocToc;$("#docTocClose").onclick=hideDocToc;$("#docTocBackdrop").onclick=hideDocToc;
-$("#docSearchBtn").onclick=()=>{$("#docSearchRow").classList.toggle("show");if($("#docSearchRow").classList.contains("show"))setTimeout(()=>$("#docSearchInput").focus(),50);};
-$("#docSearchInput").oninput=()=>clearDocSearch();
-$("#docSearchInput").onkeydown=e=>{if(e.key==="Enter")runDocSearch();if(e.key==="Escape")$("#docSearchRow").classList.remove("show");};
-$("#docSearchNext").onclick=()=>docSearchHits.length?focusDocSearchHit(1):runDocSearch();$("#docSearchPrev").onclick=()=>docSearchHits.length?focusDocSearchHit(-1):runDocSearch();
-$("#docSearchCount").onclick=runDocSearch;
-$("#docFontBtn").onclick=()=>{docFontIndex=(docFontIndex+1)%DOC_FONT_SIZES.length;updateDocFont();toast(`文档字号：${DOC_FONT_SIZES[docFontIndex]}px`);};
-$("#docDownloadBtn").onclick=downloadCurrentMarkdown;$("#docReaderScroll").addEventListener("scroll",updateDocProgress,{passive:true});
-window.addEventListener("popstate",()=>{if($("#docReader").classList.contains("show")&&!location.hash.match(/^#agent-\d+-design$/))closeDocument({historyBack:false});else handleDocumentHash();});
+function initDocumentReaderControls(){
+  const reader=$("#docReader");
+  if(!reader){
+    console.warn("EEAgent: Markdown Reader DOM missing; homepage continues.");
+    return;
+  }
+
+  const bindClick=(selector,handler)=>{
+    const element=$(selector);
+    if(element)element.onclick=handler;
+    else console.warn(`EEAgent optional document control missing: ${selector}`);
+  };
+
+  bindClick("#docBackBtn",()=>closeDocument());
+  bindClick("#docTocBtn",showDocToc);
+  bindClick("#docTocClose",hideDocToc);
+  bindClick("#docTocBackdrop",hideDocToc);
+  bindClick("#docSearchBtn",()=>{
+    const row=$("#docSearchRow");
+    if(!row)return;
+    row.classList.toggle("show");
+    if(row.classList.contains("show"))setTimeout(()=>$("#docSearchInput")?.focus(),50);
+  });
+  bindClick("#docSearchNext",()=>docSearchHits.length?focusDocSearchHit(1):runDocSearch());
+  bindClick("#docSearchPrev",()=>docSearchHits.length?focusDocSearchHit(-1):runDocSearch());
+  bindClick("#docSearchCount",runDocSearch);
+  bindClick("#docFontBtn",()=>{
+    docFontIndex=(docFontIndex+1)%DOC_FONT_SIZES.length;
+    updateDocFont();
+    toast(`文档字号：${DOC_FONT_SIZES[docFontIndex]}px`);
+  });
+  bindClick("#docDownloadBtn",downloadCurrentMarkdown);
+
+  const searchInput=$("#docSearchInput");
+  if(searchInput){
+    searchInput.oninput=()=>clearDocSearch();
+    searchInput.onkeydown=event=>{
+      if(event.key==="Enter")runDocSearch();
+      if(event.key==="Escape")$("#docSearchRow")?.classList.remove("show");
+    };
+  }
+
+  const scroll=$("#docReaderScroll");
+  if(scroll)scroll.addEventListener("scroll",updateDocProgress,{passive:true});
+}
+initDocumentReaderControls();
+
+window.addEventListener("popstate",()=>{
+  const reader=$("#docReader");
+  if(reader?.classList.contains("show")&&!location.hash.match(/^#agent-\d+-design$/)){
+    closeDocument({historyBack:false});
+  }else{
+    handleDocumentHash();
+  }
+});
 
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove("show"),2200)}
 function downloadJson(){
@@ -1265,7 +1368,7 @@ $("#themeBtn").onclick=()=>{
 };
 document.documentElement.dataset.theme=localStorage.getItem("eeagent-theme")||"light";
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){
-  if($("#docReader").classList.contains("show")){closeDocument();return;}
+  if($("#docReader")?.classList.contains("show")){closeDocument();return;}
   $("#agentModal").classList.remove("show");
   $("#workflowDrawer").classList.remove("show");
   setWorkflowOverlayOpen(false);

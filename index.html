@@ -22,6 +22,8 @@
   --shadow:0 18px 50px rgba(0,0,0,.3); --chip:#1e2b46; --chipText:#b9ceff;
 }
 *{box-sizing:border-box}
+html{scrollbar-gutter:stable;overflow-x:clip}
+body{overflow-x:hidden}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif}
 button,input,select{font:inherit}
@@ -65,8 +67,8 @@ h1{font-size:46px;line-height:1.13;margin:18px 0 14px;letter-spacing:-1.2px}
 .main{width:min(1440px,calc(100% - 40px));margin:24px auto 80px}
 .toolbar{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;position:sticky;top:82px;z-index:20;box-shadow:0 12px 35px rgba(31,63,110,.08)}
 .filter-row{display:flex;gap:9px;flex-wrap:wrap}
-.filter-chip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:10px 13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.18s}
-.filter-chip.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 8px 18px rgba(36,107,253,.22)}
+.filter-chip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:10px 13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background-color .18s,border-color .18s,color .18s,box-shadow .18s;flex:0 0 auto;font-weight:700;min-height:42px}
+.filter-chip.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 8px 18px rgba(36,107,253,.22);font-weight:700}
 .search-row{display:grid;grid-template-columns:1fr 170px 150px;gap:10px;margin-top:12px}
 .search-wrap{position:relative}.search-wrap span{position:absolute;left:14px;top:11px;color:var(--muted)}
 .search-wrap input,select{width:100%;height:44px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;outline:none}
@@ -112,6 +114,34 @@ select{padding:0 12px}
 .modal-footer{display:flex;justify-content:space-between;gap:10px;margin-top:24px;flex-wrap:wrap}
 .drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(500px,100%);background:var(--panel);border-left:1px solid var(--line);box-shadow:-24px 0 70px rgba(0,0,0,.22);padding:24px;overflow:auto}
 .drawer h2{margin:0 0 6px}.drawer-sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+
+.workflow-manager{margin:16px 0 18px;padding:14px;border:1px solid var(--line);background:var(--panel2);border-radius:16px}
+.workflow-name-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px}
+.workflow-name-input{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);padding:0 12px;outline:none}
+.workflow-name-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 13%,transparent)}
+.workflow-manager-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:9px}
+.workflow-manager-actions .btn{height:38px;padding:0 8px;font-size:12px}
+.saved-workflows-head,.current-workflow-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:17px 1px 9px}
+.saved-workflows-head h3,.current-workflow-head h3{margin:0;font-size:14px}
+.saved-workflows-head span,.current-workflow-head span{color:var(--muted);font-size:11px}
+.saved-workflows-list{display:flex;flex-direction:column;gap:8px}
+.saved-workflow-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:11px}
+.saved-workflow-item.active{border-color:color-mix(in srgb,var(--primary) 48%,var(--line));box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 10%,transparent)}
+.saved-workflow-title{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;min-width:0}
+.saved-workflow-title span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.saved-workflow-badge{font-size:9px;padding:3px 6px;border-radius:999px;background:var(--chip);color:var(--chipText);font-weight:700;flex:0 0 auto}
+.saved-workflow-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.saved-workflow-actions{display:flex;gap:4px}
+.saved-workflow-actions button{height:29px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);padding:0 8px;font-size:11px;cursor:pointer}
+.workflow-empty{padding:20px;text-align:center;border:1px dashed var(--line);border-radius:13px;color:var(--muted);font-size:12px;background:var(--panel)}
+.workflow-dirty{color:#ef7b18!important;font-weight:700}
+@media(max-width:720px){
+  .workflow-manager{margin-top:13px;padding:12px}
+  .workflow-manager-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .saved-workflow-item{grid-template-columns:minmax(0,1fr)}
+  .saved-workflow-actions{justify-content:flex-end}
+}
+
 .workflow-list{display:flex;flex-direction:column;gap:10px}
 .workflow-item{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--panel2);border-radius:13px;padding:10px}
 .order{width:28px;height:28px;border-radius:9px;background:var(--chip);color:var(--chipText);display:grid;place-items:center;font-size:12px;font-weight:800}
@@ -151,8 +181,8 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   .stats{gap:8px;margin-top:15px}.stat{min-width:0;flex:1;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18);box-shadow:none;padding:10px}.stat b{font-size:20px}.stat span{font-size:10px;color:rgba(255,255,255,.72)}
   .main{width:100%;margin:0 auto 40px;padding:0 13px}
   .toolbar{position:sticky;top:calc(58px + env(safe-area-inset-top));padding:8px 0 10px;border:0;border-radius:0;background:var(--bg);box-shadow:none;z-index:25}
-  .filter-row{display:flex;overflow-x:auto;flex-wrap:nowrap;gap:7px;padding:0 1px 2px;scrollbar-width:none}.filter-row::-webkit-scrollbar{display:none}
-  .filter-chip{white-space:nowrap;border-radius:999px;padding:9px 12px;font-size:12px;background:var(--panel)}
+  .filter-row{display:flex;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap;gap:7px;padding:0 1px 2px;scrollbar-width:none;max-width:100%;overscroll-behavior-x:contain;touch-action:pan-x;overflow-anchor:none;-webkit-overflow-scrolling:touch}.filter-row::-webkit-scrollbar{display:none}
+  .filter-chip{white-space:nowrap;border-radius:999px;padding:9px 12px;font-size:12px;background:var(--panel);font-weight:700;flex:0 0 auto}
   .search-row{display:grid;grid-template-columns:1fr 104px;gap:8px;margin-top:8px}.search-row .btn{display:none}.search-wrap input,select{height:42px;border-radius:13px;font-size:13px}
   .summary-line{margin:14px 2px 10px;font-size:12px}.summary-line span:last-child{display:none}
   .category-section{margin-top:22px}.category-title{font-size:17px;margin-bottom:10px}.category-dot{width:10px;height:10px;box-shadow:0 0 0 5px color-mix(in srgb,var(--cat) 12%,transparent)}
@@ -261,12 +291,37 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   <aside class="drawer-panel">
     <button class="icon-btn close" data-close="drawer">×</button>
     <h2>工作流编排</h2>
-    <div class="drawer-sub">通过上下移动调整执行顺序。此原型会把选择结果保存在浏览器本地。</div>
+    <div class="drawer-sub">可以创建多个工作流。工作流会保存在当前浏览器，也可以导出备份后在其他设备导入。</div>
+
+    <div class="workflow-manager">
+      <div class="workflow-name-row">
+        <input class="workflow-name-input" id="workflowName" maxlength="80" placeholder="输入工作流名称">
+        <button class="btn primary" id="saveWorkflow">保存</button>
+      </div>
+      <div class="workflow-manager-actions">
+        <button class="btn" id="newWorkflow">新建</button>
+        <button class="btn" id="duplicateWorkflow">复制当前</button>
+        <button class="btn" id="exportAllWorkflows">备份全部</button>
+        <button class="btn" id="importWorkflows">导入备份</button>
+        <input type="file" id="importWorkflowsFile" accept="application/json,.json" hidden>
+      </div>
+
+      <div class="saved-workflows-head">
+        <h3>已保存的工作流</h3>
+        <span id="savedWorkflowCount">0 个</span>
+      </div>
+      <div class="saved-workflows-list" id="savedWorkflowList"></div>
+    </div>
+
+    <div class="current-workflow-head">
+      <h3>当前编排</h3>
+      <span id="currentWorkflowState">未保存</span>
+    </div>
     <div class="workflow-list" id="workflowList"></div>
     <div class="drawer-footer">
-      <button class="btn" id="clearWorkflow">清空</button>
+      <button class="btn" id="clearWorkflow">清空当前</button>
       <button class="btn" id="copyWorkflow">复制 JSON</button>
-      <button class="btn primary" id="downloadWorkflow">导出工作流</button>
+      <button class="btn primary" id="downloadWorkflow">导出当前</button>
     </div>
   </aside>
 </div>
@@ -305,9 +360,59 @@ const categories = [
 ];
 const catColor = Object.fromEntries(categories.map(c=>[c.name,c.color]));
 let state = {category:"全部", query:"", sort:"number"};
-let selected = JSON.parse(localStorage.getItem("eeagent-workflow")||"[]");
+
+const WORKFLOW_LIBRARY_KEY = "eeagent-workflows-v2";
+const WORKFLOW_DRAFT_KEY = "eeagent-workflow-draft-v2";
+const WORKFLOW_ACTIVE_KEY = "eeagent-active-workflow-v2";
+
+function safeParseStorage(key, fallback){
+  try{
+    const value = JSON.parse(localStorage.getItem(key) || "null");
+    return value ?? fallback;
+  }catch{
+    return fallback;
+  }
+}
+function normalizeAgentIds(value){
+  const ids = Array.isArray(value) ? value : [];
+  return [...new Set(ids.map(Number).filter(id => agents.some(a => a.id === id)))];
+}
+function normalizeSavedWorkflow(value){
+  if(!value || typeof value !== "object") return null;
+  const agentIds = normalizeAgentIds(value.agentIds || (value.agents || []).map(a => a.id));
+  return {
+    id: String(value.id || createWorkflowId()),
+    name: String(value.name || "未命名工作流").slice(0,80),
+    description: String(value.description || ""),
+    agentIds,
+    createdAt: value.createdAt || new Date().toISOString(),
+    updatedAt: value.updatedAt || value.createdAt || new Date().toISOString()
+  };
+}
+
+let savedWorkflows = (safeParseStorage(WORKFLOW_LIBRARY_KEY, []) || [])
+  .map(normalizeSavedWorkflow).filter(Boolean);
+
+const legacySelected = normalizeAgentIds(safeParseStorage("eeagent-workflow", []));
+const restoredDraft = safeParseStorage(WORKFLOW_DRAFT_KEY, null);
+let activeWorkflowId = restoredDraft?.activeWorkflowId || localStorage.getItem(WORKFLOW_ACTIVE_KEY) || null;
+const restoredActive = savedWorkflows.find(w => w.id === activeWorkflowId) || null;
+
+let selected = normalizeAgentIds(
+  restoredDraft?.agentIds ??
+  restoredActive?.agentIds ??
+  legacySelected
+);
+let workflowName =
+  String(restoredDraft?.name || restoredActive?.name || "未命名工作流").slice(0,80);
+let workflowDirty =
+  typeof restoredDraft?.dirty === "boolean"
+    ? restoredDraft.dirty
+    : (!restoredActive && selected.length > 0);
+
 let favorites = JSON.parse(localStorage.getItem("eeagent-favorites")||"[]");
 let currentAgent = null;
+let filtersInitialized = false;
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -367,8 +472,28 @@ function iconSvg(kind){
 }
 
 function renderFilters(){
-  $("#filters").innerHTML = categories.map(c=>`<button class="filter-chip ${state.category===c.name?'active':''}" data-cat="${c.name}"><span style="color:${c.color}">●</span>${c.name}</button>`).join("");
-  $$(".filter-chip").forEach(b=>b.onclick=()=>{state.category=b.dataset.cat;render();});
+  const row = $("#filters");
+  if(!filtersInitialized){
+    row.innerHTML = categories.map(c =>
+      `<button class="filter-chip" type="button" aria-pressed="false" data-cat="${c.name}"><span style="color:${c.color}">●</span>${c.name}</button>`
+    ).join("");
+    row.querySelectorAll(".filter-chip").forEach(button => {
+      button.addEventListener("click", () => {
+        const previousScrollLeft = row.scrollLeft;
+        state.category = button.dataset.cat;
+        render();
+        requestAnimationFrame(() => {
+          row.scrollLeft = previousScrollLeft;
+        });
+      });
+    });
+    filtersInitialized = true;
+  }
+  row.querySelectorAll(".filter-chip").forEach(button => {
+    const active = button.dataset.cat === state.category;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
 }
 
 function filteredAgents(){
@@ -438,38 +563,338 @@ function openAgent(id){
   $("#agentModal").classList.add("show");
 }
 function toggleSelected(id){
-  selected=selected.includes(id)?selected.filter(x=>x!==id):[...selected,id];
-  localStorage.setItem("eeagent-workflow",JSON.stringify(selected));render();
+  selected = selected.includes(id) ? selected.filter(x=>x!==id) : [...selected,id];
+  workflowDirty = true;
+  persistWorkflowDraft();
+  render();
 }
 function toggleFavorite(id){
   favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
   localStorage.setItem("eeagent-favorites",JSON.stringify(favorites));render();
 }
 function updateWorkflowBar(){
-  $("#workflowCount").textContent=`已选择 ${selected.length} 个智能体`;
+  const dirtyLabel = workflowDirty ? " · 未保存" : "";
+  $("#workflowCount").textContent=`${workflowName} · ${selected.length} 个智能体${dirtyLabel}`;
   $("#workflowBar").classList.toggle("show",selected.length>0);
 }
 function renderWorkflow(){
-  const list=selected.map(id=>agents.find(a=>a.id===id)).filter(Boolean);
-  $("#workflowList").innerHTML=list.length?list.map((a,i)=>`<div class="workflow-item">
+  const nameInput = $("#workflowName");
+  if(nameInput){
+    nameInput.value = workflowName;
+    nameInput.oninput = () => {
+      workflowName = nameInput.value.slice(0,80);
+      workflowDirty = true;
+      persistWorkflowDraft();
+      updateWorkflowBar();
+      updateCurrentWorkflowState();
+    };
+  }
+
+  const currentAgents = selected.map(id=>agents.find(a=>a.id===id)).filter(Boolean);
+  $("#workflowList").innerHTML = currentAgents.length ? currentAgents.map((a,i)=>`<div class="workflow-item">
     <span class="order">${i+1}</span><div><b>${a.title}</b><small>Agent ${a.id} · ${a.category}</small></div>
-    <div class="workflow-actions"><button data-move="-1" data-id="${a.id}" ${i===0?'disabled':''}>↑</button><button data-move="1" data-id="${a.id}" ${i===list.length-1?'disabled':''}>↓</button><button data-remove="${a.id}">×</button></div>
-  </div>`).join(""):`<div class="empty" style="display:block;padding:40px">尚未选择智能体。</div>`;
-  $$("[data-move]").forEach(b=>b.onclick=()=>moveItem(+b.dataset.id,+b.dataset.move));
-  $$("[data-remove]").forEach(b=>b.onclick=()=>{toggleSelected(+b.dataset.remove);renderWorkflow();});
+    <div class="workflow-actions"><button data-move="-1" data-id="${a.id}" ${i===0?'disabled':''}>↑</button><button data-move="1" data-id="${a.id}" ${i===currentAgents.length-1?'disabled':''}>↓</button><button data-remove="${a.id}">×</button></div>
+  </div>`).join("") : `<div class="workflow-empty">当前工作流还没有智能体。可关闭面板后点击卡片上的“＋”。</div>`;
+
+  $$("#workflowList [data-move]").forEach(b=>b.onclick=()=>moveItem(+b.dataset.id,+b.dataset.move));
+  $$("#workflowList [data-remove]").forEach(b=>b.onclick=()=>{
+    toggleSelected(+b.dataset.remove);
+    renderWorkflow();
+  });
+
+  renderSavedWorkflowLibrary();
+  updateCurrentWorkflowState();
 }
+
 function moveItem(id,delta){
-  const i=selected.indexOf(id),j=i+delta;if(j<0||j>=selected.length)return;
+  const i=selected.indexOf(id),j=i+delta;
+  if(j<0||j>=selected.length) return;
   [selected[i],selected[j]]=[selected[j],selected[i]];
-  localStorage.setItem("eeagent-workflow",JSON.stringify(selected));renderWorkflow();
+  workflowDirty = true;
+  persistWorkflowDraft();
+  renderWorkflow();
+  updateWorkflowBar();
 }
+
 function workflowPayload(){
   return {
-    name:"未命名电子工程工作流",
-    createdAt:new Date().toISOString(),
-    agents:selected.map((id,index)=>{const a=agents.find(x=>x.id===id);return {order:index+1,id:a.id,title:a.title,url:a.url};})
+    version: 2,
+    id: activeWorkflowId,
+    name: (workflowName || "未命名工作流").trim() || "未命名工作流",
+    createdAt: savedWorkflows.find(w=>w.id===activeWorkflowId)?.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    agents:selected.map((id,index)=>{
+      const a=agents.find(x=>x.id===id);
+      return {order:index+1,id:a.id,title:a.title,category:a.category,url:a.url};
+    })
+  };
+}
+
+function createWorkflowId(){
+  if(globalThis.crypto?.randomUUID) return crypto.randomUUID();
+  return `wf-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+function persistWorkflowLibrary(){
+  localStorage.setItem(WORKFLOW_LIBRARY_KEY, JSON.stringify(savedWorkflows));
+}
+function persistWorkflowDraft(){
+  localStorage.setItem(WORKFLOW_DRAFT_KEY, JSON.stringify({
+    activeWorkflowId,
+    name: workflowName,
+    agentIds: selected,
+    dirty: workflowDirty,
+    updatedAt: new Date().toISOString()
+  }));
+  if(activeWorkflowId) localStorage.setItem(WORKFLOW_ACTIVE_KEY, activeWorkflowId);
+  else localStorage.removeItem(WORKFLOW_ACTIVE_KEY);
+}
+function formatWorkflowDate(value){
+  try{
+    return new Intl.DateTimeFormat("zh-CN",{
+      month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"
+    }).format(new Date(value));
+  }catch{
+    return "";
   }
 }
+function updateCurrentWorkflowState(){
+  const el = $("#currentWorkflowState");
+  if(!el) return;
+  if(activeWorkflowId){
+    el.textContent = workflowDirty ? "已修改，尚未保存" : "已保存";
+  }else{
+    el.textContent = selected.length ? "新工作流，尚未保存" : "空白工作流";
+  }
+  el.classList.toggle("workflow-dirty", workflowDirty);
+}
+function renderSavedWorkflowLibrary(){
+  const list = $("#savedWorkflowList");
+  if(!list) return;
+
+  const ordered = [...savedWorkflows].sort((a,b)=>
+    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+  $("#savedWorkflowCount").textContent = `${ordered.length} 个`;
+
+  list.innerHTML = ordered.length ? ordered.map(workflow => `
+    <div class="saved-workflow-item ${workflow.id===activeWorkflowId?'active':''}" data-workflow-id="${workflow.id}">
+      <div>
+        <div class="saved-workflow-title">
+          <span>${escapeHtml(workflow.name)}</span>
+          ${workflow.id===activeWorkflowId?'<span class="saved-workflow-badge">当前</span>':''}
+        </div>
+        <div class="saved-workflow-meta">${workflow.agentIds.length} 个智能体 · 更新于 ${formatWorkflowDate(workflow.updatedAt)}</div>
+      </div>
+      <div class="saved-workflow-actions">
+        <button data-workflow-open="${workflow.id}">打开</button>
+        <button data-workflow-copy="${workflow.id}">复制</button>
+        <button data-workflow-delete="${workflow.id}">删除</button>
+      </div>
+    </div>
+  `).join("") : `<div class="workflow-empty">还没有保存的工作流。给当前工作流命名后点击“保存”。</div>`;
+
+  list.querySelectorAll("[data-workflow-open]").forEach(button =>
+    button.onclick = () => openSavedWorkflow(button.dataset.workflowOpen)
+  );
+  list.querySelectorAll("[data-workflow-copy]").forEach(button =>
+    button.onclick = () => duplicateSavedWorkflow(button.dataset.workflowCopy)
+  );
+  list.querySelectorAll("[data-workflow-delete]").forEach(button =>
+    button.onclick = () => deleteSavedWorkflow(button.dataset.workflowDelete)
+  );
+}
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[char]);
+}
+function saveCurrentWorkflow(){
+  const cleanName = (workflowName || "").trim();
+  if(!cleanName){
+    toast("请先输入工作流名称");
+    $("#workflowName")?.focus();
+    return;
+  }
+  if(!selected.length){
+    toast("请先向工作流中加入至少一个智能体");
+    return;
+  }
+
+  const now = new Date().toISOString();
+  let workflow = activeWorkflowId
+    ? savedWorkflows.find(w=>w.id===activeWorkflowId)
+    : null;
+
+  if(workflow){
+    workflow.name = cleanName;
+    workflow.agentIds = [...selected];
+    workflow.updatedAt = now;
+  }else{
+    workflow = {
+      id:createWorkflowId(),
+      name:cleanName,
+      description:"",
+      agentIds:[...selected],
+      createdAt:now,
+      updatedAt:now
+    };
+    savedWorkflows.push(workflow);
+    activeWorkflowId = workflow.id;
+  }
+
+  workflowName = cleanName;
+  workflowDirty = false;
+  persistWorkflowLibrary();
+  persistWorkflowDraft();
+  renderWorkflow();
+  updateWorkflowBar();
+  toast("工作流已保存");
+}
+function confirmDiscardDraft(){
+  if(!workflowDirty) return true;
+  return confirm("当前工作流有尚未保存的修改。继续操作会保留在临时草稿中，但不会更新已保存版本。是否继续？");
+}
+function startNewWorkflow(){
+  if(!confirmDiscardDraft()) return false;
+  activeWorkflowId = null;
+  workflowName = `新工作流 ${savedWorkflows.length + 1}`;
+  selected = [];
+  workflowDirty = false;
+  persistWorkflowDraft();
+  render();
+  renderWorkflow();
+  updateWorkflowBar();
+  toast("已创建空白工作流");
+  return true;
+}
+function openSavedWorkflow(id){
+  const workflow = savedWorkflows.find(w=>w.id===id);
+  if(!workflow) return;
+  if(activeWorkflowId!==id && !confirmDiscardDraft()) return;
+
+  activeWorkflowId = workflow.id;
+  workflowName = workflow.name;
+  selected = [...workflow.agentIds];
+  workflowDirty = false;
+  persistWorkflowDraft();
+  render();
+  renderWorkflow();
+  updateWorkflowBar();
+  toast(`已打开：${workflow.name}`);
+}
+function duplicateSavedWorkflow(id){
+  const source = savedWorkflows.find(w=>w.id===id);
+  if(!source) return;
+  const now = new Date().toISOString();
+  const duplicate = {
+    ...source,
+    id:createWorkflowId(),
+    name:`${source.name} - 副本`,
+    agentIds:[...source.agentIds],
+    createdAt:now,
+    updatedAt:now
+  };
+  savedWorkflows.push(duplicate);
+  persistWorkflowLibrary();
+  openSavedWorkflow(duplicate.id);
+  toast("已复制为新工作流");
+}
+function duplicateCurrentWorkflow(){
+  if(!selected.length){
+    toast("当前工作流为空");
+    return;
+  }
+  const now = new Date().toISOString();
+  const duplicate = {
+    id:createWorkflowId(),
+    name:`${(workflowName || "未命名工作流").trim()} - 副本`,
+    description:"",
+    agentIds:[...selected],
+    createdAt:now,
+    updatedAt:now
+  };
+  savedWorkflows.push(duplicate);
+  persistWorkflowLibrary();
+  activeWorkflowId = duplicate.id;
+  workflowName = duplicate.name;
+  selected = [...duplicate.agentIds];
+  workflowDirty = false;
+  persistWorkflowDraft();
+  renderWorkflow();
+  updateWorkflowBar();
+  toast("当前编排已复制并保存");
+}
+function deleteSavedWorkflow(id){
+  const workflow = savedWorkflows.find(w=>w.id===id);
+  if(!workflow) return;
+  if(!confirm(`确定删除工作流“${workflow.name}”吗？`)) return;
+
+  savedWorkflows = savedWorkflows.filter(w=>w.id!==id);
+  persistWorkflowLibrary();
+
+  if(activeWorkflowId===id){
+    activeWorkflowId = null;
+    workflowName = "未命名工作流";
+    selected = [];
+    workflowDirty = false;
+    persistWorkflowDraft();
+    render();
+  }
+  renderWorkflow();
+  updateWorkflowBar();
+  toast("工作流已删除");
+}
+function openWorkflowDrawer(){
+  $("#workflowDrawer").classList.add("show");
+  renderWorkflow();
+}
+function exportAllWorkflowLibrary(){
+  const payload = {
+    format:"eeagent-workflow-library",
+    version:2,
+    exportedAt:new Date().toISOString(),
+    workflows:savedWorkflows
+  };
+  const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `eeagent-workflows-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+async function importWorkflowLibrary(file){
+  if(!file) return;
+  try{
+    const parsed = JSON.parse(await file.text());
+    const source = Array.isArray(parsed) ? parsed : parsed.workflows;
+    if(!Array.isArray(source)) throw new Error("格式不正确");
+
+    const imported = source.map(normalizeSavedWorkflow).filter(Boolean);
+    if(!imported.length) throw new Error("没有可导入的工作流");
+
+    const existingIds = new Set(savedWorkflows.map(w=>w.id));
+    const now = new Date().toISOString();
+    imported.forEach(workflow=>{
+      if(existingIds.has(workflow.id)) workflow.id = createWorkflowId();
+      workflow.name = savedWorkflows.some(w=>w.name===workflow.name)
+        ? `${workflow.name} - 导入`
+        : workflow.name;
+      workflow.createdAt ||= now;
+      workflow.updatedAt = now;
+      existingIds.add(workflow.id);
+      savedWorkflows.push(workflow);
+    });
+    persistWorkflowLibrary();
+    renderWorkflow();
+    toast(`已导入 ${imported.length} 个工作流`);
+  }catch(error){
+    toast(`导入失败：${error.message}`);
+  }finally{
+    $("#importWorkflowsFile").value = "";
+  }
+}
+
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove("show"),2200)}
 function downloadJson(){
   const blob=new Blob([JSON.stringify(workflowPayload(),null,2)],{type:"application/json"});
@@ -480,17 +905,35 @@ $$("[data-close]").forEach(x=>x.onclick=()=>close(x.dataset.close));
 $("#searchInput").oninput=e=>{state.query=e.target.value;render()};
 $("#sortSelect").onchange=e=>{state.sort=e.target.value;render()};
 $("#clearBtn").onclick=()=>{state={category:"全部",query:"",sort:"number"};$("#searchInput").value="";$("#sortSelect").value="number";render()};
-$("#openWorkflow").onclick=()=>{$("#workflowDrawer").classList.add("show");renderWorkflow()};
-$("#newWorkflowTop").onclick=()=>{$("#workflowDrawer").classList.add("show");renderWorkflow()};
-$("#clearWorkflow").onclick=()=>{selected=[];localStorage.setItem("eeagent-workflow","[]");render();renderWorkflow()};
+$("#openWorkflow").onclick=openWorkflowDrawer;
+$("#newWorkflowTop").onclick=()=>{startNewWorkflow();openWorkflowDrawer()};
+$("#saveWorkflow").onclick=saveCurrentWorkflow;
+$("#newWorkflow").onclick=startNewWorkflow;
+$("#duplicateWorkflow").onclick=duplicateCurrentWorkflow;
+$("#exportAllWorkflows").onclick=exportAllWorkflowLibrary;
+$("#importWorkflows").onclick=()=>$("#importWorkflowsFile").click();
+$("#importWorkflowsFile").onchange=e=>importWorkflowLibrary(e.target.files?.[0]);
+$("#clearWorkflow").onclick=()=>{
+  if(selected.length && !confirm("确定清空当前工作流中的全部智能体吗？")) return;
+  selected=[];
+  workflowDirty=true;
+  persistWorkflowDraft();
+  render();
+  renderWorkflow();
+};
 $("#downloadWorkflow").onclick=downloadJson;
-$("#copyWorkflow").onclick=async()=>{await navigator.clipboard.writeText(JSON.stringify(workflowPayload(),null,2));toast("工作流 JSON 已复制")};
+$("#copyWorkflow").onclick=async()=>{
+  await navigator.clipboard.writeText(JSON.stringify(workflowPayload(),null,2));
+  toast("当前工作流 JSON 已复制");
+};
 $("#themeBtn").onclick=()=>{
   const next=document.documentElement.dataset.theme==="dark"?"light":"dark";
   document.documentElement.dataset.theme=next;localStorage.setItem("eeagent-theme",next);
 };
 document.documentElement.dataset.theme=localStorage.getItem("eeagent-theme")||"light";
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#agentModal").classList.remove("show");$("#workflowDrawer").classList.remove("show")}});
+persistWorkflowLibrary();
+persistWorkflowDraft();
 render();
 
 // ===== EEAgent mobile helpers =====
@@ -519,7 +962,7 @@ document.querySelector('.mobile-bottom-nav')?.addEventListener('click',e=>{
     document.getElementById('emptyState').style.display=favoriteAgents.length?'none':'block';
     document.getElementById('resultSummary').textContent=`收藏 ${favoriteAgents.length} 个智能体`;bindCards();mobileSetActive('favorites');scrollTo({top:0,behavior:'smooth'});
   }else if(action==='workflow'){
-    document.getElementById('workflowDrawer').classList.add('show');renderWorkflow();mobileSetActive('workflow');
+    openWorkflowDrawer();mobileSetActive('workflow');
   }else if(action==='theme'){
     document.getElementById('themeBtn').click();mobileSetActive('theme');
   }

@@ -20,3 +20,13 @@ Android：Chrome 打开后，点菜单→“安装应用”或“添加到主屏
 - Service Worker 缓存版本升级为 `eeagent-mobile-v2`。
 
 工作流默认只保存在同一浏览器、同一域名中。清除网站数据、改用其他浏览器或更换域名后，本地数据不会自动同步，因此建议定期使用“备份全部”。
+
+
+## V3：智能体设计方案文档
+
+- `docs/agent-01.md` 至 `docs/agent-47.md`：47 份设计方案。
+- `docs/index.json`：智能体与 Markdown 文件的映射。
+- 点击智能体卡片或“查看设计方案”，会打开手机端 Markdown 阅读器。
+- 阅读器支持目录、阅读进度、文内搜索、字号切换、上一篇/下一篇和 Markdown 下载。
+- Service Worker 会预缓存全部 47 份文档，安装 PWA 后可以离线阅读。
+- 更新某个智能体文档时，替换对应 `docs/agent-XX.md` 并修改 `sw.js` 的缓存版本。

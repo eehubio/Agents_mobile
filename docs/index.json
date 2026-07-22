@@ -1,0 +1,378 @@
+[
+  {
+    "agentId": 1,
+    "title": "Datasheet 资产接入",
+    "category": "器件与资产",
+    "document": "docs/agent-01.md",
+    "sourceFile": "datasheet_asset_ingestion_agent_codex_spec.md",
+    "bytes": 33117
+  },
+  {
+    "agentId": 2,
+    "title": "PDF 解析与 OCR 路由",
+    "category": "器件与资产",
+    "document": "docs/agent-02.md",
+    "sourceFile": "pdf_parsing_ocr_router_agent_codex_spec.md",
+    "bytes": 65195
+  },
+  {
+    "agentId": 3,
+    "title": "器件分类与 Schema 路由",
+    "category": "器件与资产",
+    "document": "docs/agent-03.md",
+    "sourceFile": "component_classification_schema_router_agent_codex_spec.md",
+    "bytes": 56532
+  },
+  {
+    "agentId": 4,
+    "title": "管脚、表格与图片定位",
+    "category": "器件与资产",
+    "document": "docs/agent-04.md",
+    "sourceFile": "datasheet_structure_visual_locator_agent_codex_spec.md",
+    "bytes": 63989
+  },
+  {
+    "agentId": 5,
+    "title": "参数抽取与单位归一",
+    "category": "器件与资产",
+    "document": "docs/agent-05.md",
+    "sourceFile": "parameter_extraction_unit_normalization_agent_codex_spec.md",
+    "bytes": 70877
+  },
+  {
+    "agentId": 6,
+    "title": "引脚、封装与订货型号",
+    "category": "器件与资产",
+    "document": "docs/agent-06.md",
+    "sourceFile": "pin_package_ordering_agent_codex_spec.md",
+    "bytes": 51994
+  },
+  {
+    "agentId": 7,
+    "title": "证据锚定与人工审核",
+    "category": "器件与资产",
+    "document": "docs/agent-07.md",
+    "sourceFile": "evidence_anchoring_human_review_agent_codex_spec.md",
+    "bytes": 48801
+  },
+  {
+    "agentId": 8,
+    "title": "KiCad 原理图符号生成",
+    "category": "器件与资产",
+    "document": "docs/agent-08.md",
+    "sourceFile": "kicad_symbol_generation_agent_codex_spec.md",
+    "bytes": 63250
+  },
+  {
+    "agentId": 9,
+    "title": "封装、3D 与库资产生成",
+    "category": "器件与资产",
+    "document": "docs/agent-09.md",
+    "sourceFile": "kicad_footprint_3d_mapping_agent_codex_spec.md",
+    "bytes": 66634
+  },
+  {
+    "agentId": 10,
+    "title": "工程需求结构化",
+    "category": "需求与方案",
+    "document": "docs/agent-10.md",
+    "sourceFile": "engineering_requirements_structuring_agent_codex_spec.md",
+    "bytes": 90680
+  },
+  {
+    "agentId": 11,
+    "title": "项目拆解与里程碑",
+    "category": "需求与方案",
+    "document": "docs/agent-11.md",
+    "sourceFile": "project_decomposition_milestone_orchestration_agent_codex_spec.md",
+    "bytes": 115919
+  },
+  {
+    "agentId": 12,
+    "title": "功能架构与框图",
+    "category": "需求与方案",
+    "document": "docs/agent-12.md",
+    "sourceFile": "functional_architecture_block_diagram_agent_codex_spec.md",
+    "bytes": 116551
+  },
+  {
+    "agentId": 13,
+    "title": "参考设计与功能模块推荐",
+    "category": "需求与方案",
+    "document": "docs/agent-13.md",
+    "sourceFile": "reference_design_function_module_recommendation_agent_codex_spec.md",
+    "bytes": 124884
+  },
+  {
+    "agentId": 14,
+    "title": "元器件选型优化",
+    "category": "需求与方案",
+    "document": "docs/agent-14.md",
+    "sourceFile": "component_selection_optimization_agent_codex_spec.md",
+    "bytes": 134681
+  },
+  {
+    "agentId": 15,
+    "title": "接口、电源与兼容性检查",
+    "category": "需求与方案",
+    "document": "docs/agent-15.md",
+    "sourceFile": "interface_power_compatibility_agent_codex_spec.md",
+    "bytes": 125033
+  },
+  {
+    "agentId": 16,
+    "title": "KiCad / EDA 工程解析",
+    "category": "EDA 工程",
+    "document": "docs/agent-16.md",
+    "sourceFile": "kicad_eda_project_parser_agent_codex_spec.md",
+    "bytes": 88061
+  },
+  {
+    "agentId": 17,
+    "title": "PDF / 图片原理图识别",
+    "category": "EDA 工程",
+    "document": "docs/agent-17.md",
+    "sourceFile": "pdf_image_schematic_recognition_agent_codex_spec.md",
+    "bytes": 81610
+  },
+  {
+    "agentId": 18,
+    "title": "Netlist 重建",
+    "category": "EDA 工程",
+    "document": "docs/agent-18.md",
+    "sourceFile": "netlist_reconstruction_agent_codex_spec.md",
+    "bytes": 92522
+  },
+  {
+    "agentId": 19,
+    "title": "KiCad MCP 执行",
+    "category": "EDA 工程",
+    "document": "docs/agent-19.md",
+    "sourceFile": "kicad_mcp_execution_agent_codex_spec.md",
+    "bytes": 95296
+  },
+  {
+    "agentId": 20,
+    "title": "EDA 库依赖与 Pin-Pad 校验",
+    "category": "EDA 工程",
+    "document": "docs/agent-20.md",
+    "sourceFile": "eda_library_dependency_pin_pad_validation_agent_codex_spec.md",
+    "bytes": 98659
+  },
+  {
+    "agentId": 21,
+    "title": "固件与驱动框架生成",
+    "category": "EDA 工程",
+    "document": "docs/agent-21.md",
+    "sourceFile": "firmware_driver_framework_generation_agent_codex_spec.md",
+    "bytes": 98292
+  },
+  {
+    "agentId": 22,
+    "title": "ERC 与 AI 原理图审查",
+    "category": "EDA 工程",
+    "document": "docs/agent-22.md",
+    "sourceFile": "erc_ai_schematic_review_agent_codex_spec.md",
+    "bytes": 93268
+  },
+  {
+    "agentId": 23,
+    "title": "电路仿真与结果解读",
+    "category": "EDA 工程",
+    "document": "docs/agent-23.md",
+    "sourceFile": "circuit_simulation_result_interpretation_agent_codex_spec.md",
+    "bytes": 95985
+  },
+  {
+    "agentId": 24,
+    "title": "PCB 约束提取",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-24.md",
+    "sourceFile": "pcb_constraint_extraction_agent_codex_spec.md",
+    "bytes": 107889
+  },
+  {
+    "agentId": 25,
+    "title": "PCB 初步布局",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-25.md",
+    "sourceFile": "pcb_preliminary_layout_agent_codex_spec.md",
+    "bytes": 78228
+  },
+  {
+    "agentId": 26,
+    "title": "PCB 自动布线",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-26.md",
+    "sourceFile": "pcb_automatic_routing_agent_codex_spec.md",
+    "bytes": 80861
+  },
+  {
+    "agentId": 27,
+    "title": "DRC / SI / PI / EMC 审查",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-27.md",
+    "sourceFile": "drc_si_pi_emc_review_agent_codex_spec.md",
+    "bytes": 96457
+  },
+  {
+    "agentId": 28,
+    "title": "3D 与机械干涉",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-28.md",
+    "sourceFile": "3d_mechanical_interference_agent_codex_spec.md",
+    "bytes": 105905
+  },
+  {
+    "agentId": 29,
+    "title": "生产文件生成",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-29.md",
+    "sourceFile": "pcb_production_file_generation_agent_codex_spec.md",
+    "bytes": 106396
+  },
+  {
+    "agentId": 30,
+    "title": "DFM / DFA 制造可行性",
+    "category": "PCB 设计制造",
+    "document": "docs/agent-30.md",
+    "sourceFile": "dfm_dfa_manufacturability_agent_codex_spec.md",
+    "bytes": 105125
+  },
+  {
+    "agentId": 31,
+    "title": "BOM 接入与标准化",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-31.md",
+    "sourceFile": "bom_intake_normalization_agent_codex_spec.md",
+    "bytes": 53348
+  },
+  {
+    "agentId": 32,
+    "title": "MPN 精准匹配",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-32.md",
+    "sourceFile": "mpn_precision_matching_agent_codex_spec.md",
+    "bytes": 55168
+  },
+  {
+    "agentId": 33,
+    "title": "器件替代推荐",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-33.md",
+    "sourceFile": "component_alternative_recommendation_agent_codex_spec.md",
+    "bytes": 70022
+  },
+  {
+    "agentId": 34,
+    "title": "生命周期 / EOL / PCN",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-34.md",
+    "sourceFile": "lifecycle_eol_pcn_agent_codex_spec.md",
+    "bytes": 57979
+  },
+  {
+    "agentId": 35,
+    "title": "合规、原产地与关税",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-35.md",
+    "sourceFile": "compliance_origin_tariff_agent_codex_spec.md",
+    "bytes": 69512
+  },
+  {
+    "agentId": 36,
+    "title": "实时价格与库存",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-36.md",
+    "sourceFile": "realtime_pricing_inventory_agent_codex_spec.md",
+    "bytes": 61989
+  },
+  {
+    "agentId": 37,
+    "title": "BOM 风险与多源供应",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-37.md",
+    "sourceFile": "bom_risk_multisourcing_agent_codex_spec.md",
+    "bytes": 60721
+  },
+  {
+    "agentId": 38,
+    "title": "MOQ / SPQ / 采购包优化",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-38.md",
+    "sourceFile": "moq_spq_packaging_optimization_agent_codex_spec.md",
+    "bytes": 72801
+  },
+  {
+    "agentId": 39,
+    "title": "成本、报价与利润",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-39.md",
+    "sourceFile": "cost_quote_profit_agent_codex_spec.md",
+    "bytes": 77618
+  },
+  {
+    "agentId": 40,
+    "title": "采购计划与缺料协同",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-40.md",
+    "sourceFile": "procurement_planning_shortage_collaboration_agent_codex_spec.md",
+    "bytes": 82704
+  },
+  {
+    "agentId": 41,
+    "title": "库存复用与呆滞料",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-41.md",
+    "sourceFile": "inventory_reuse_excess_obsolete_agent_codex_spec.md",
+    "bytes": 83675
+  },
+  {
+    "agentId": 42,
+    "title": "物料与批次追溯",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-42.md",
+    "sourceFile": "material_lot_traceability_agent_codex_spec.md",
+    "bytes": 69695
+  },
+  {
+    "agentId": 43,
+    "title": "EBOM / MBOM 与 NPI 转换",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-43.md",
+    "sourceFile": "ebom_mbom_npi_conversion_agent_codex_spec.md",
+    "bytes": 88830
+  },
+  {
+    "agentId": 44,
+    "title": "PCB / SMT 制造询价与下单",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-44.md",
+    "sourceFile": "pcb_smt_manufacturing_rfq_order_agent_codex_spec.md",
+    "bytes": 98201
+  },
+  {
+    "agentId": 45,
+    "title": "来料、生产与测试质量",
+    "category": "BOM / 供应链 / 采购",
+    "document": "docs/agent-45.md",
+    "sourceFile": "incoming_production_test_quality_agent_codex_spec.md",
+    "bytes": 94111
+  },
+  {
+    "agentId": 46,
+    "title": "LabSight 现场调试",
+    "category": "调试与变更闭环",
+    "document": "docs/agent-46.md",
+    "sourceFile": "labsight_field_debugging_agent_codex_spec.md",
+    "bytes": 133873
+  },
+  {
+    "agentId": 47,
+    "title": "工程变更与问题闭环",
+    "category": "调试与变更闭环",
+    "document": "docs/agent-47.md",
+    "sourceFile": "engineering_change_issue_closure_agent_codex_spec.md",
+    "bytes": 131703
+  }
+]

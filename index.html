@@ -200,6 +200,30 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   .mobile-install{display:none;margin:0 14px 12px;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:12px;align-items:center;gap:10px}.mobile-install.show{display:flex}.mobile-install-copy{flex:1}.mobile-install-copy b{display:block;font-size:13px}.mobile-install-copy span{font-size:10px;color:var(--muted)}.mobile-install .btn{height:38px;padding:0 13px}
 }
 
+
+/* ===== Markdown design document reader ===== */
+.doc-reader{position:fixed;inset:0;z-index:120;background:var(--bg);display:none;overflow:hidden}
+.doc-reader.show{display:flex;flex-direction:column}
+.doc-reader-header{position:relative;z-index:4;background:color-mix(in srgb,var(--panel) 96%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.doc-reader-top{height:58px;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:8px;align-items:center;padding:0 12px}
+.doc-reader-back{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:20px}
+.doc-reader-title{min-width:0}.doc-reader-title b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}.doc-reader-title span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.doc-reader-actions{display:flex;gap:6px}.doc-reader-actions button{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:13px}
+.doc-progress-track{height:3px;background:var(--panel2)}.doc-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .08s linear}
+.doc-search-row{display:none;grid-template-columns:minmax(0,1fr) auto auto;gap:7px;padding:9px 12px;border-top:1px solid var(--line);background:var(--panel)}
+.doc-search-row.show{display:grid}.doc-search-input{height:39px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:0 11px;outline:none;min-width:0}.doc-search-row button{height:39px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:0 11px}
+.doc-reader-layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);position:relative}
+.doc-reader-scroll{overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scroll-behavior:smooth}
+.doc-reader-container{width:min(920px,100%);margin:0 auto;padding:22px 18px calc(72px + env(safe-area-inset-bottom));font-size:var(--doc-font-size,16px);line-height:1.78}
+.doc-reader-state{min-height:54dvh;display:grid;place-items:center;text-align:center;color:var(--muted);padding:40px}.doc-reader-state b{display:block;color:var(--text);font-size:16px;margin-bottom:6px}
+.doc-reader-source{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 20px;padding:12px;border:1px solid var(--line);background:var(--panel);border-radius:14px;color:var(--muted);font-size:11px}.doc-reader-source b{color:var(--text);font-size:12px}.doc-source-pill{padding:5px 8px;border-radius:999px;background:var(--chip);color:var(--chipText)}
+.markdown-body{color:var(--text);word-break:break-word}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{scroll-margin-top:76px;line-height:1.35;color:var(--text);font-weight:800}.markdown-body h1{font-size:1.72em;margin:0 0 .8em;padding-bottom:.5em;border-bottom:1px solid var(--line)}.markdown-body h2{font-size:1.42em;margin:1.9em 0 .75em;padding-bottom:.38em;border-bottom:1px solid var(--line)}.markdown-body h3{font-size:1.18em;margin:1.55em 0 .6em}.markdown-body h4{font-size:1.04em;margin:1.35em 0 .55em}.markdown-body p{margin:.78em 0}.markdown-body a{color:var(--primary);text-decoration:none;overflow-wrap:anywhere}.markdown-body a:hover{text-decoration:underline}.markdown-body strong{font-weight:800}.markdown-body hr{border:0;border-top:1px solid var(--line);margin:1.7em 0}.markdown-body blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--primary);background:color-mix(in srgb,var(--primary) 6%,var(--panel));color:var(--muted);border-radius:0 10px 10px 0}.markdown-body ul,.markdown-body ol{padding-left:1.45em;margin:.7em 0}.markdown-body li{margin:.28em 0}.markdown-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:.12em .35em}.markdown-body pre{position:relative;overflow:auto;margin:1em 0;padding:15px;background:#0f172a;color:#e7edf7;border-radius:13px;border:1px solid #26344e;line-height:1.55;-webkit-overflow-scrolling:touch}.markdown-body pre code{padding:0;background:none;border:0;color:inherit;font-size:.82em;white-space:pre}.markdown-body .code-lang{display:block;color:#91a4c4;font-size:10px;text-transform:uppercase;margin-bottom:8px}.markdown-body table{width:100%;border-collapse:collapse;margin:1em 0;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}.markdown-body th,.markdown-body td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;min-width:90px}.markdown-body th{background:var(--panel2);font-weight:800}.markdown-body img{max-width:100%;height:auto;border-radius:10px}.markdown-body mark.doc-search-hit{background:#ffdb57;color:#172038;border-radius:3px;padding:0 1px}.markdown-body mark.doc-search-current{outline:2px solid #ff8a00}
+.doc-reader-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:34px}.doc-reader-nav button{min-height:48px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:13px;padding:9px 11px;text-align:left}.doc-reader-nav button:last-child{text-align:right}.doc-reader-nav small{display:block;color:var(--muted);font-size:10px;margin-bottom:3px}.doc-reader-nav b{font-size:12px}
+.doc-toc{position:absolute;inset:0 0 0 auto;width:min(390px,88%);z-index:6;background:var(--panel);border-left:1px solid var(--line);box-shadow:-22px 0 60px rgba(0,0,0,.2);transform:translateX(105%);transition:transform .2s ease;display:flex;flex-direction:column}.doc-toc.show{transform:translateX(0)}.doc-toc-head{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line)}.doc-toc-head b{font-size:15px}.doc-toc-list{overflow:auto;padding:10px 10px calc(30px + env(safe-area-inset-bottom))}.doc-toc-list button{display:block;width:100%;border:0;background:transparent;color:var(--muted);text-align:left;border-radius:9px;padding:8px 9px;font-size:12px;line-height:1.4}.doc-toc-list button:hover,.doc-toc-list button.active{background:var(--panel2);color:var(--primary)}.doc-toc-list button[data-level="2"]{padding-left:18px}.doc-toc-list button[data-level="3"]{padding-left:30px}.doc-toc-backdrop{position:absolute;inset:0;z-index:5;background:rgba(4,10,24,.48);display:none}.doc-toc-backdrop.show{display:block}
+.doc-offline-banner{display:none;margin:0 12px 9px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--green) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--green) 28%,var(--line));font-size:10px;color:var(--muted)}.doc-offline-banner.show{display:block}.doc-offline-banner b{color:var(--green)}
+@media(min-width:1050px){.doc-reader-layout{grid-template-columns:minmax(0,1fr) 300px}.doc-toc{position:relative;inset:auto;width:auto;transform:none;box-shadow:none;z-index:1}.doc-toc-head{display:none}.doc-toc-list{border-left:1px solid var(--line)}.doc-toc-backdrop{display:none!important}.doc-reader-actions #docTocBtn{display:none}}
+@media(max-width:580px){.doc-reader-top{grid-template-columns:40px minmax(0,1fr) auto;padding:0 9px}.doc-reader-actions{gap:4px}.doc-reader-actions button{width:34px;height:34px}.doc-reader-container{padding:17px 14px calc(76px + env(safe-area-inset-bottom));font-size:var(--doc-font-size,15px)}.markdown-body h1{font-size:1.55em}.markdown-body h2{font-size:1.31em}.doc-search-row{grid-template-columns:minmax(0,1fr) auto}.doc-search-row #docSearchCount{grid-column:1/-1;text-align:center;height:auto;border:0;background:transparent;color:var(--muted)}}
+
 </style>
 </head>
 <body>
@@ -281,7 +305,7 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
     <div class="tags" id="modalTags"></div>
     <div class="modal-footer">
       <button class="btn" id="modalAdd">加入工作流</button>
-      <a class="btn primary" id="modalLink" href="#">进入智能体</a>
+      <button class="btn primary" id="modalDoc">查看设计方案</button>
     </div>
   </div>
 </div>
@@ -326,6 +350,45 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   </aside>
 </div>
 
+
+<div class="doc-reader" id="docReader" aria-hidden="true">
+  <header class="doc-reader-header">
+    <div class="doc-reader-top">
+      <button class="doc-reader-back" id="docBackBtn" aria-label="返回">‹</button>
+      <div class="doc-reader-title"><b id="docTitle">设计方案</b><span id="docMeta"></span></div>
+      <div class="doc-reader-actions">
+        <button id="docSearchBtn" title="文内搜索">⌕</button>
+        <button id="docFontBtn" title="调整字号">Aa</button>
+        <button id="docTocBtn" title="目录">☰</button>
+        <button id="docDownloadBtn" title="下载 Markdown">↓</button>
+      </div>
+    </div>
+    <div class="doc-search-row" id="docSearchRow">
+      <input class="doc-search-input" id="docSearchInput" placeholder="搜索当前设计方案…">
+      <button id="docSearchPrev">↑</button>
+      <button id="docSearchNext">↓</button>
+      <button id="docSearchCount">0 / 0</button>
+    </div>
+    <div class="doc-offline-banner" id="docOfflineBanner"><b>离线可用</b>：47 份设计方案已包含在 PWA 缓存中。</div>
+    <div class="doc-progress-track"><div class="doc-progress-bar" id="docProgressBar"></div></div>
+  </header>
+  <div class="doc-reader-layout">
+    <div class="doc-reader-scroll" id="docReaderScroll">
+      <div class="doc-reader-container">
+        <div class="doc-reader-source" id="docSourceInfo"></div>
+        <div class="doc-reader-state" id="docLoading"><div><b>正在加载设计方案</b><span>Markdown 将在手机上转换为易读页面。</span></div></div>
+        <article class="markdown-body" id="markdownBody" hidden></article>
+        <div class="doc-reader-nav" id="docReaderNav" hidden></div>
+      </div>
+    </div>
+    <div class="doc-toc-backdrop" id="docTocBackdrop"></div>
+    <aside class="doc-toc" id="docToc">
+      <div class="doc-toc-head"><b>文档目录</b><button class="icon-btn" id="docTocClose">×</button></div>
+      <div class="doc-toc-list" id="docTocList"></div>
+    </aside>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 
@@ -343,12 +406,12 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 <footer>
   <div class="footer-inner">
     <div><b>EEAgent</b> · 电子工程 AI 协同平台</div>
-    <div>卡片链接为原型占位，可在页面内 agents 数据中替换为实际地址。</div>
+    <div>47 份智能体设计方案已经与卡片关联，可在线阅读并下载 Markdown。</div>
   </div>
 </footer>
 
 <script>
-const agents = [{"id": 1, "title": "Datasheet 资产接入", "description": "接入厂商页面、PDF、图片与已有器件资料，建立可追踪的数据源。", "category": "器件与资产", "icon": "datasheet", "url": "./agents/agent-1.html"}, {"id": 2, "title": "PDF 解析与 OCR 路由", "description": "识别数据手册版式，按文本、表格、图片和扫描页选择解析策略。", "category": "器件与资产", "icon": "pdf", "url": "./agents/agent-2.html"}, {"id": 3, "title": "器件分类与 Schema 路由", "description": "将器件归入正确分类，并匹配对应参数模板与抽取规则。", "category": "器件与资产", "icon": "schema", "url": "./agents/agent-3.html"}, {"id": 4, "title": "管脚、表格与图片定位", "description": "定位 Pin 表、参数表、框图、封装图和应用电路等关键区域。", "category": "器件与资产", "icon": "locate", "url": "./agents/agent-4.html"}, {"id": 5, "title": "参数抽取与单位归一", "description": "抽取关键参数，处理 Min/Typ/Max、条件、单位和证据锚点。", "category": "器件与资产", "icon": "parameter", "url": "./agents/agent-5.html"}, {"id": 6, "title": "引脚、封装与订货型号", "description": "解析 Pin、Package、Ordering Code 与不同温度/速度等级。", "category": "器件与资产", "icon": "package", "url": "./agents/agent-6.html"}, {"id": 7, "title": "证据锚定与人工审核", "description": "把结构化结果绑定原文位置，支持人工复核、修订与回写。", "category": "器件与资产", "icon": "evidence", "url": "./agents/agent-7.html"}, {"id": 8, "title": "KiCad 原理图符号生成", "description": "根据器件 Pin 定义生成 KiCad 符号，并做电气类型检查。", "category": "器件与资产", "icon": "symbol", "url": "./agents/agent-8.html"}, {"id": 9, "title": "封装、3D 与库资产生成", "description": "生成或匹配 Footprint、3D、Pin-Pad 映射和库版本信息。", "category": "器件与资产", "icon": "cube", "url": "./agents/agent-9.html"}, {"id": 10, "title": "工程需求结构化", "description": "将自然语言、PRD、图片和客户需求转为结构化工程约束。", "category": "需求与方案", "icon": "requirements", "url": "./agents/agent-10.html"}, {"id": 11, "title": "项目拆解与里程碑", "description": "拆解硬件、固件、结构、测试、采购和制造任务与依赖。", "category": "需求与方案", "icon": "milestone", "url": "./agents/agent-11.html"}, {"id": 12, "title": "功能架构与框图", "description": "生成系统框图、电源树、数据流、控制流和模块接口。", "category": "需求与方案", "icon": "architecture", "url": "./agents/agent-12.html"}, {"id": 13, "title": "参考设计与功能模块推荐", "description": "检索参考设计、KiCad 工程和模块库，评估复用比例。", "category": "需求与方案", "icon": "reuse", "url": "./agents/agent-13.html"}, {"id": 14, "title": "元器件选型优化", "description": "按性能、价格、库存、生命周期、功耗和封装进行多目标排序。", "category": "需求与方案", "icon": "selection", "url": "./agents/agent-14.html"}, {"id": 15, "title": "接口、电源与兼容性检查", "description": "检查电压、电平、协议、时钟、带宽、Pin Mux 和物理连接。", "category": "需求与方案", "icon": "compatibility", "url": "./agents/agent-15.html"}, {"id": 16, "title": "KiCad / EDA 工程解析", "description": "把原理图、PCB、BOM、层叠和库关系解析为统一工程 IR。", "category": "EDA 工程", "icon": "eda", "url": "./agents/agent-16.html"}, {"id": 17, "title": "PDF / 图片原理图识别", "description": "从扫描图、PDF 和截图中识别元件、网络和标注。", "category": "EDA 工程", "icon": "vision", "url": "./agents/agent-17.html"}, {"id": 18, "title": "Netlist 重建", "description": "从识别结果或旧设计中重建连接关系，并管理歧义。", "category": "EDA 工程", "icon": "netlist", "url": "./agents/agent-18.html"}, {"id": 19, "title": "KiCad MCP 执行", "description": "受控执行 KiCad 修改、导出、校验、回读和回滚。", "category": "EDA 工程", "icon": "terminal", "url": "./agents/agent-19.html"}, {"id": 20, "title": "EDA 库依赖与 Pin-Pad 校验", "description": "检查 Symbol、Footprint、3D、Pin-Pad 和库版本依赖。", "category": "EDA 工程", "icon": "library", "url": "./agents/agent-20.html"}, {"id": 21, "title": "固件与驱动框架生成", "description": "生成 BSP、驱动、协议、Pin Mux、日志和工程骨架。", "category": "EDA 工程", "icon": "code", "url": "./agents/agent-21.html"}, {"id": 22, "title": "ERC 与 AI 原理图审查", "description": "结合规则和 AI 检查保护、去耦、额定值、连接与设计风险。", "category": "EDA 工程", "icon": "review", "url": "./agents/agent-22.html"}, {"id": 23, "title": "电路仿真与结果解读", "description": "组织仿真条件、波形、容差和故障签名，并解释结果。", "category": "EDA 工程", "icon": "simulation", "url": "./agents/agent-23.html"}, {"id": 24, "title": "PCB 约束提取", "description": "从器件、接口和工厂能力生成层叠、阻抗、间距与布局布线约束。", "category": "PCB 设计制造", "icon": "constraints", "url": "./agents/agent-24.html"}, {"id": 25, "title": "PCB 初步布局", "description": "完成分区、关键器件摆放、连接器固定与可布线性评估。", "category": "PCB 设计制造", "icon": "placement", "url": "./agents/agent-25.html"}, {"id": 26, "title": "PCB 自动布线", "description": "按关键网络、差分、时钟、电源和回流路径执行受控布线。", "category": "PCB 设计制造", "icon": "routing", "url": "./agents/agent-26.html"}, {"id": 27, "title": "DRC / SI / PI / EMC 审查", "description": "检查设计规则、信号完整性、电源完整性、EMC 和回流路径。", "category": "PCB 设计制造", "icon": "shield", "url": "./agents/agent-27.html"}, {"id": 28, "title": "3D 与机械干涉", "description": "检查板框、器件高度、连接器、外壳、螺柱和装配空间。", "category": "PCB 设计制造", "icon": "mechanical", "url": "./agents/agent-28.html"}, {"id": 29, "title": "生产文件生成", "description": "生成并校验 Gerber、Drill、BOM、CPL、装配图和钢网文件。", "category": "PCB 设计制造", "icon": "manufacturing", "url": "./agents/agent-29.html"}, {"id": 30, "title": "DFM / DFA 制造可行性", "description": "检查线宽间距、孔径、阻焊桥、拼板、贴装方向和装配风险。", "category": "PCB 设计制造", "icon": "dfm", "url": "./agents/agent-30.html"}, {"id": 31, "title": "BOM 接入与标准化", "description": "清洗 BOM、统一字段、拆分型号并建立证据与版本。", "category": "BOM / 供应链 / 采购", "icon": "bom", "url": "./agents/agent-31.html"}, {"id": 32, "title": "MPN 精准匹配", "description": "把模糊型号映射到精确 Manufacturer Part Number 和订货型号。", "category": "BOM / 供应链 / 采购", "icon": "match", "url": "./agents/agent-32.html"}, {"id": 33, "title": "器件替代推荐", "description": "在缺货、降本、EOL 或第二来源场景下推荐可验证替代料。", "category": "BOM / 供应链 / 采购", "icon": "alternative", "url": "./agents/agent-33.html"}, {"id": 34, "title": "生命周期 / EOL / PCN", "description": "跟踪 Active、NRND、EOL、PCN、PDN 和长期供货风险。", "category": "BOM / 供应链 / 采购", "icon": "lifecycle", "url": "./agents/agent-34.html"}, {"id": 35, "title": "合规、原产地与关税", "description": "管理 RoHS、REACH、原产地、出口限制和关税相关信息。", "category": "BOM / 供应链 / 采购", "icon": "compliance", "url": "./agents/agent-35.html"}, {"id": 36, "title": "实时价格与库存", "description": "接入授权分销商价格、库存、MOQ、SPQ、区域和交期快照。", "category": "BOM / 供应链 / 采购", "icon": "price", "url": "./agents/agent-36.html"}, {"id": 37, "title": "BOM 风险与多源供应", "description": "分析单一来源、生命周期、区域和交期风险，构建多源策略。", "category": "BOM / 供应链 / 采购", "icon": "risk", "url": "./agents/agent-37.html"}, {"id": 38, "title": "MOQ / SPQ / 采购包优化", "description": "优化采购批量、包装、超买、分单和供应商组合。", "category": "BOM / 供应链 / 采购", "icon": "optimize", "url": "./agents/agent-38.html"}, {"id": 39, "title": "成本、报价与利润", "description": "计算有效成本、加工费用、报价、毛利和敏感性。", "category": "BOM / 供应链 / 采购", "icon": "cost", "url": "./agents/agent-39.html"}, {"id": 40, "title": "采购计划与缺料协同", "description": "生成采购建议、Need-by、缺料预警、替代和协同任务。", "category": "BOM / 供应链 / 采购", "icon": "procurement", "url": "./agents/agent-40.html"}, {"id": 41, "title": "库存复用与呆滞料", "description": "识别可复用库存、过剩料、呆滞料和跨项目调拨机会。", "category": "BOM / 供应链 / 采购", "icon": "inventory", "url": "./agents/agent-41.html"}, {"id": 42, "title": "物料与批次追溯", "description": "跟踪 Lot、Date Code、序列号、库存、供应商和使用去向。", "category": "BOM / 供应链 / 采购", "icon": "traceability", "url": "./agents/agent-42.html"}, {"id": 43, "title": "EBOM / MBOM 与 NPI 转换", "description": "把工程 BOM 转为制造 BOM、工艺路线、替代和装配版本。", "category": "BOM / 供应链 / 采购", "icon": "npi", "url": "./agents/agent-43.html"}, {"id": 44, "title": "PCB / SMT 制造询价与下单", "description": "生成工厂 RFQ、能力匹配、报价比较和受控下单包。", "category": "BOM / 供应链 / 采购", "icon": "rfq", "url": "./agents/agent-44.html"}, {"id": 45, "title": "来料、生产与测试质量", "description": "管理 IQC、生产测试、良率、不良、返工和质量证据。", "category": "BOM / 供应链 / 采购", "icon": "quality", "url": "./agents/agent-45.html"}, {"id": 46, "title": "LabSight 现场调试", "description": "融合摄像头、语音、示波器、逻辑分析仪、DMM 和串口日志。", "category": "调试与变更闭环", "icon": "labsight", "url": "./agents/agent-46.html"}, {"id": 47, "title": "工程变更与问题闭环", "description": "完成 ECN/ECO、版本影响、库存/WIP 处置、8D、PDCA 和知识回写。", "category": "调试与变更闭环", "icon": "change", "url": "./agents/agent-47.html"}];
+const agents = [{"id": 1, "title": "Datasheet 资产接入", "description": "接入厂商页面、PDF、图片与已有器件资料，建立可追踪的数据源。", "category": "器件与资产", "icon": "datasheet", "url": "./agents/agent-1.html", "doc": "./docs/agent-01.md", "docSource": "datasheet_asset_ingestion_agent_codex_spec.md", "docBytes": 33117}, {"id": 2, "title": "PDF 解析与 OCR 路由", "description": "识别数据手册版式，按文本、表格、图片和扫描页选择解析策略。", "category": "器件与资产", "icon": "pdf", "url": "./agents/agent-2.html", "doc": "./docs/agent-02.md", "docSource": "pdf_parsing_ocr_router_agent_codex_spec.md", "docBytes": 65195}, {"id": 3, "title": "器件分类与 Schema 路由", "description": "将器件归入正确分类，并匹配对应参数模板与抽取规则。", "category": "器件与资产", "icon": "schema", "url": "./agents/agent-3.html", "doc": "./docs/agent-03.md", "docSource": "component_classification_schema_router_agent_codex_spec.md", "docBytes": 56532}, {"id": 4, "title": "管脚、表格与图片定位", "description": "定位 Pin 表、参数表、框图、封装图和应用电路等关键区域。", "category": "器件与资产", "icon": "locate", "url": "./agents/agent-4.html", "doc": "./docs/agent-04.md", "docSource": "datasheet_structure_visual_locator_agent_codex_spec.md", "docBytes": 63989}, {"id": 5, "title": "参数抽取与单位归一", "description": "抽取关键参数，处理 Min/Typ/Max、条件、单位和证据锚点。", "category": "器件与资产", "icon": "parameter", "url": "./agents/agent-5.html", "doc": "./docs/agent-05.md", "docSource": "parameter_extraction_unit_normalization_agent_codex_spec.md", "docBytes": 70877}, {"id": 6, "title": "引脚、封装与订货型号", "description": "解析 Pin、Package、Ordering Code 与不同温度/速度等级。", "category": "器件与资产", "icon": "package", "url": "./agents/agent-6.html", "doc": "./docs/agent-06.md", "docSource": "pin_package_ordering_agent_codex_spec.md", "docBytes": 51994}, {"id": 7, "title": "证据锚定与人工审核", "description": "把结构化结果绑定原文位置，支持人工复核、修订与回写。", "category": "器件与资产", "icon": "evidence", "url": "./agents/agent-7.html", "doc": "./docs/agent-07.md", "docSource": "evidence_anchoring_human_review_agent_codex_spec.md", "docBytes": 48801}, {"id": 8, "title": "KiCad 原理图符号生成", "description": "根据器件 Pin 定义生成 KiCad 符号，并做电气类型检查。", "category": "器件与资产", "icon": "symbol", "url": "./agents/agent-8.html", "doc": "./docs/agent-08.md", "docSource": "kicad_symbol_generation_agent_codex_spec.md", "docBytes": 63250}, {"id": 9, "title": "封装、3D 与库资产生成", "description": "生成或匹配 Footprint、3D、Pin-Pad 映射和库版本信息。", "category": "器件与资产", "icon": "cube", "url": "./agents/agent-9.html", "doc": "./docs/agent-09.md", "docSource": "kicad_footprint_3d_mapping_agent_codex_spec.md", "docBytes": 66634}, {"id": 10, "title": "工程需求结构化", "description": "将自然语言、PRD、图片和客户需求转为结构化工程约束。", "category": "需求与方案", "icon": "requirements", "url": "./agents/agent-10.html", "doc": "./docs/agent-10.md", "docSource": "engineering_requirements_structuring_agent_codex_spec.md", "docBytes": 90680}, {"id": 11, "title": "项目拆解与里程碑", "description": "拆解硬件、固件、结构、测试、采购和制造任务与依赖。", "category": "需求与方案", "icon": "milestone", "url": "./agents/agent-11.html", "doc": "./docs/agent-11.md", "docSource": "project_decomposition_milestone_orchestration_agent_codex_spec.md", "docBytes": 115919}, {"id": 12, "title": "功能架构与框图", "description": "生成系统框图、电源树、数据流、控制流和模块接口。", "category": "需求与方案", "icon": "architecture", "url": "./agents/agent-12.html", "doc": "./docs/agent-12.md", "docSource": "functional_architecture_block_diagram_agent_codex_spec.md", "docBytes": 116551}, {"id": 13, "title": "参考设计与功能模块推荐", "description": "检索参考设计、KiCad 工程和模块库，评估复用比例。", "category": "需求与方案", "icon": "reuse", "url": "./agents/agent-13.html", "doc": "./docs/agent-13.md", "docSource": "reference_design_function_module_recommendation_agent_codex_spec.md", "docBytes": 124884}, {"id": 14, "title": "元器件选型优化", "description": "按性能、价格、库存、生命周期、功耗和封装进行多目标排序。", "category": "需求与方案", "icon": "selection", "url": "./agents/agent-14.html", "doc": "./docs/agent-14.md", "docSource": "component_selection_optimization_agent_codex_spec.md", "docBytes": 134681}, {"id": 15, "title": "接口、电源与兼容性检查", "description": "检查电压、电平、协议、时钟、带宽、Pin Mux 和物理连接。", "category": "需求与方案", "icon": "compatibility", "url": "./agents/agent-15.html", "doc": "./docs/agent-15.md", "docSource": "interface_power_compatibility_agent_codex_spec.md", "docBytes": 125033}, {"id": 16, "title": "KiCad / EDA 工程解析", "description": "把原理图、PCB、BOM、层叠和库关系解析为统一工程 IR。", "category": "EDA 工程", "icon": "eda", "url": "./agents/agent-16.html", "doc": "./docs/agent-16.md", "docSource": "kicad_eda_project_parser_agent_codex_spec.md", "docBytes": 88061}, {"id": 17, "title": "PDF / 图片原理图识别", "description": "从扫描图、PDF 和截图中识别元件、网络和标注。", "category": "EDA 工程", "icon": "vision", "url": "./agents/agent-17.html", "doc": "./docs/agent-17.md", "docSource": "pdf_image_schematic_recognition_agent_codex_spec.md", "docBytes": 81610}, {"id": 18, "title": "Netlist 重建", "description": "从识别结果或旧设计中重建连接关系，并管理歧义。", "category": "EDA 工程", "icon": "netlist", "url": "./agents/agent-18.html", "doc": "./docs/agent-18.md", "docSource": "netlist_reconstruction_agent_codex_spec.md", "docBytes": 92522}, {"id": 19, "title": "KiCad MCP 执行", "description": "受控执行 KiCad 修改、导出、校验、回读和回滚。", "category": "EDA 工程", "icon": "terminal", "url": "./agents/agent-19.html", "doc": "./docs/agent-19.md", "docSource": "kicad_mcp_execution_agent_codex_spec.md", "docBytes": 95296}, {"id": 20, "title": "EDA 库依赖与 Pin-Pad 校验", "description": "检查 Symbol、Footprint、3D、Pin-Pad 和库版本依赖。", "category": "EDA 工程", "icon": "library", "url": "./agents/agent-20.html", "doc": "./docs/agent-20.md", "docSource": "eda_library_dependency_pin_pad_validation_agent_codex_spec.md", "docBytes": 98659}, {"id": 21, "title": "固件与驱动框架生成", "description": "生成 BSP、驱动、协议、Pin Mux、日志和工程骨架。", "category": "EDA 工程", "icon": "code", "url": "./agents/agent-21.html", "doc": "./docs/agent-21.md", "docSource": "firmware_driver_framework_generation_agent_codex_spec.md", "docBytes": 98292}, {"id": 22, "title": "ERC 与 AI 原理图审查", "description": "结合规则和 AI 检查保护、去耦、额定值、连接与设计风险。", "category": "EDA 工程", "icon": "review", "url": "./agents/agent-22.html", "doc": "./docs/agent-22.md", "docSource": "erc_ai_schematic_review_agent_codex_spec.md", "docBytes": 93268}, {"id": 23, "title": "电路仿真与结果解读", "description": "组织仿真条件、波形、容差和故障签名，并解释结果。", "category": "EDA 工程", "icon": "simulation", "url": "./agents/agent-23.html", "doc": "./docs/agent-23.md", "docSource": "circuit_simulation_result_interpretation_agent_codex_spec.md", "docBytes": 95985}, {"id": 24, "title": "PCB 约束提取", "description": "从器件、接口和工厂能力生成层叠、阻抗、间距与布局布线约束。", "category": "PCB 设计制造", "icon": "constraints", "url": "./agents/agent-24.html", "doc": "./docs/agent-24.md", "docSource": "pcb_constraint_extraction_agent_codex_spec.md", "docBytes": 107889}, {"id": 25, "title": "PCB 初步布局", "description": "完成分区、关键器件摆放、连接器固定与可布线性评估。", "category": "PCB 设计制造", "icon": "placement", "url": "./agents/agent-25.html", "doc": "./docs/agent-25.md", "docSource": "pcb_preliminary_layout_agent_codex_spec.md", "docBytes": 78228}, {"id": 26, "title": "PCB 自动布线", "description": "按关键网络、差分、时钟、电源和回流路径执行受控布线。", "category": "PCB 设计制造", "icon": "routing", "url": "./agents/agent-26.html", "doc": "./docs/agent-26.md", "docSource": "pcb_automatic_routing_agent_codex_spec.md", "docBytes": 80861}, {"id": 27, "title": "DRC / SI / PI / EMC 审查", "description": "检查设计规则、信号完整性、电源完整性、EMC 和回流路径。", "category": "PCB 设计制造", "icon": "shield", "url": "./agents/agent-27.html", "doc": "./docs/agent-27.md", "docSource": "drc_si_pi_emc_review_agent_codex_spec.md", "docBytes": 96457}, {"id": 28, "title": "3D 与机械干涉", "description": "检查板框、器件高度、连接器、外壳、螺柱和装配空间。", "category": "PCB 设计制造", "icon": "mechanical", "url": "./agents/agent-28.html", "doc": "./docs/agent-28.md", "docSource": "3d_mechanical_interference_agent_codex_spec.md", "docBytes": 105905}, {"id": 29, "title": "生产文件生成", "description": "生成并校验 Gerber、Drill、BOM、CPL、装配图和钢网文件。", "category": "PCB 设计制造", "icon": "manufacturing", "url": "./agents/agent-29.html", "doc": "./docs/agent-29.md", "docSource": "pcb_production_file_generation_agent_codex_spec.md", "docBytes": 106396}, {"id": 30, "title": "DFM / DFA 制造可行性", "description": "检查线宽间距、孔径、阻焊桥、拼板、贴装方向和装配风险。", "category": "PCB 设计制造", "icon": "dfm", "url": "./agents/agent-30.html", "doc": "./docs/agent-30.md", "docSource": "dfm_dfa_manufacturability_agent_codex_spec.md", "docBytes": 105125}, {"id": 31, "title": "BOM 接入与标准化", "description": "清洗 BOM、统一字段、拆分型号并建立证据与版本。", "category": "BOM / 供应链 / 采购", "icon": "bom", "url": "./agents/agent-31.html", "doc": "./docs/agent-31.md", "docSource": "bom_intake_normalization_agent_codex_spec.md", "docBytes": 53348}, {"id": 32, "title": "MPN 精准匹配", "description": "把模糊型号映射到精确 Manufacturer Part Number 和订货型号。", "category": "BOM / 供应链 / 采购", "icon": "match", "url": "./agents/agent-32.html", "doc": "./docs/agent-32.md", "docSource": "mpn_precision_matching_agent_codex_spec.md", "docBytes": 55168}, {"id": 33, "title": "器件替代推荐", "description": "在缺货、降本、EOL 或第二来源场景下推荐可验证替代料。", "category": "BOM / 供应链 / 采购", "icon": "alternative", "url": "./agents/agent-33.html", "doc": "./docs/agent-33.md", "docSource": "component_alternative_recommendation_agent_codex_spec.md", "docBytes": 70022}, {"id": 34, "title": "生命周期 / EOL / PCN", "description": "跟踪 Active、NRND、EOL、PCN、PDN 和长期供货风险。", "category": "BOM / 供应链 / 采购", "icon": "lifecycle", "url": "./agents/agent-34.html", "doc": "./docs/agent-34.md", "docSource": "lifecycle_eol_pcn_agent_codex_spec.md", "docBytes": 57979}, {"id": 35, "title": "合规、原产地与关税", "description": "管理 RoHS、REACH、原产地、出口限制和关税相关信息。", "category": "BOM / 供应链 / 采购", "icon": "compliance", "url": "./agents/agent-35.html", "doc": "./docs/agent-35.md", "docSource": "compliance_origin_tariff_agent_codex_spec.md", "docBytes": 69512}, {"id": 36, "title": "实时价格与库存", "description": "接入授权分销商价格、库存、MOQ、SPQ、区域和交期快照。", "category": "BOM / 供应链 / 采购", "icon": "price", "url": "./agents/agent-36.html", "doc": "./docs/agent-36.md", "docSource": "realtime_pricing_inventory_agent_codex_spec.md", "docBytes": 61989}, {"id": 37, "title": "BOM 风险与多源供应", "description": "分析单一来源、生命周期、区域和交期风险，构建多源策略。", "category": "BOM / 供应链 / 采购", "icon": "risk", "url": "./agents/agent-37.html", "doc": "./docs/agent-37.md", "docSource": "bom_risk_multisourcing_agent_codex_spec.md", "docBytes": 60721}, {"id": 38, "title": "MOQ / SPQ / 采购包优化", "description": "优化采购批量、包装、超买、分单和供应商组合。", "category": "BOM / 供应链 / 采购", "icon": "optimize", "url": "./agents/agent-38.html", "doc": "./docs/agent-38.md", "docSource": "moq_spq_packaging_optimization_agent_codex_spec.md", "docBytes": 72801}, {"id": 39, "title": "成本、报价与利润", "description": "计算有效成本、加工费用、报价、毛利和敏感性。", "category": "BOM / 供应链 / 采购", "icon": "cost", "url": "./agents/agent-39.html", "doc": "./docs/agent-39.md", "docSource": "cost_quote_profit_agent_codex_spec.md", "docBytes": 77618}, {"id": 40, "title": "采购计划与缺料协同", "description": "生成采购建议、Need-by、缺料预警、替代和协同任务。", "category": "BOM / 供应链 / 采购", "icon": "procurement", "url": "./agents/agent-40.html", "doc": "./docs/agent-40.md", "docSource": "procurement_planning_shortage_collaboration_agent_codex_spec.md", "docBytes": 82704}, {"id": 41, "title": "库存复用与呆滞料", "description": "识别可复用库存、过剩料、呆滞料和跨项目调拨机会。", "category": "BOM / 供应链 / 采购", "icon": "inventory", "url": "./agents/agent-41.html", "doc": "./docs/agent-41.md", "docSource": "inventory_reuse_excess_obsolete_agent_codex_spec.md", "docBytes": 83675}, {"id": 42, "title": "物料与批次追溯", "description": "跟踪 Lot、Date Code、序列号、库存、供应商和使用去向。", "category": "BOM / 供应链 / 采购", "icon": "traceability", "url": "./agents/agent-42.html", "doc": "./docs/agent-42.md", "docSource": "material_lot_traceability_agent_codex_spec.md", "docBytes": 69695}, {"id": 43, "title": "EBOM / MBOM 与 NPI 转换", "description": "把工程 BOM 转为制造 BOM、工艺路线、替代和装配版本。", "category": "BOM / 供应链 / 采购", "icon": "npi", "url": "./agents/agent-43.html", "doc": "./docs/agent-43.md", "docSource": "ebom_mbom_npi_conversion_agent_codex_spec.md", "docBytes": 88830}, {"id": 44, "title": "PCB / SMT 制造询价与下单", "description": "生成工厂 RFQ、能力匹配、报价比较和受控下单包。", "category": "BOM / 供应链 / 采购", "icon": "rfq", "url": "./agents/agent-44.html", "doc": "./docs/agent-44.md", "docSource": "pcb_smt_manufacturing_rfq_order_agent_codex_spec.md", "docBytes": 98201}, {"id": 45, "title": "来料、生产与测试质量", "description": "管理 IQC、生产测试、良率、不良、返工和质量证据。", "category": "BOM / 供应链 / 采购", "icon": "quality", "url": "./agents/agent-45.html", "doc": "./docs/agent-45.md", "docSource": "incoming_production_test_quality_agent_codex_spec.md", "docBytes": 94111}, {"id": 46, "title": "LabSight 现场调试", "description": "融合摄像头、语音、示波器、逻辑分析仪、DMM 和串口日志。", "category": "调试与变更闭环", "icon": "labsight", "url": "./agents/agent-46.html", "doc": "./docs/agent-46.md", "docSource": "labsight_field_debugging_agent_codex_spec.md", "docBytes": 133873}, {"id": 47, "title": "工程变更与问题闭环", "description": "完成 ECN/ECO、版本影响、库存/WIP 处置、8D、PDCA 和知识回写。", "category": "调试与变更闭环", "icon": "change", "url": "./agents/agent-47.html", "doc": "./docs/agent-47.md", "docSource": "engineering_change_issue_closure_agent_codex_spec.md", "docBytes": 131703}];
 const categories = [
   {name:"全部", color:"#246bfd"},
   {name:"器件与资产", color:"#246bfd"},
@@ -513,7 +576,7 @@ function cardHtml(a){
   return `<article class="card" style="--cat:${color}" data-agent="${a.id}">
     <div class="card-top"><div class="agent-icon">${iconSvg(a.icon)}</div><span class="card-num">Agent ${String(a.id).padStart(2,"0")}</span></div>
     <h3>${a.title}</h3><p>${a.description}</p>
-    <div class="card-actions"><button class="text-btn view-btn">查看详情 →</button>
+    <div class="card-actions"><button class="text-btn view-btn">查看设计方案 →</button>
       <div class="mini-actions">
         <button class="mini-btn favorite ${fav?'active':''}" title="收藏">☆</button>
         <button class="mini-btn add ${sel?'active':''}" title="加入工作流">${sel?'✓':'＋'}</button>
@@ -541,8 +604,9 @@ function render(){
 function bindCards(){
   $$(".card").forEach(card=>{
     const id=+card.dataset.agent;
-    card.querySelector(".view-btn").onclick=()=>openAgent(id);
-    card.ondblclick=()=>openAgent(id);
+    card.querySelector(".view-btn").onclick=(e)=>{e.stopPropagation();openDocument(id);};
+    card.querySelector(".card-num").onclick=(e)=>{e.stopPropagation();openAgent(id);};
+    card.onclick=(e)=>{if(!e.target.closest("button"))openDocument(id);};
     card.querySelector(".add").onclick=(e)=>{e.stopPropagation();toggleSelected(id);};
     card.querySelector(".favorite").onclick=(e)=>{e.stopPropagation();toggleFavorite(id);};
   });
@@ -558,8 +622,7 @@ function openAgent(id){
   $("#modalTags").innerHTML=[a.category,"可编排","可追踪","版本化"].map(t=>`<span class="tag">${t}</span>`).join("");
   $("#modalAdd").textContent=selected.includes(a.id)?"从工作流移除":"加入工作流";
   $("#modalAdd").onclick=()=>{toggleSelected(a.id);openAgent(a.id)};
-  $("#modalLink").href=a.url;
-  $("#modalLink").onclick=e=>{e.preventDefault();toast(`已预留链接：${a.url}`)};
+  $("#modalDoc").onclick=()=>{close("modal");openDocument(a.id);};
   $("#agentModal").classList.add("show");
 }
 function toggleSelected(id){
@@ -895,6 +958,176 @@ async function importWorkflowLibrary(file){
   }
 }
 
+
+// ===== Markdown document reader =====
+const DOC_FONT_SIZES = [14,15,16,17,18,20];
+let currentDocAgent = null;
+let currentDocMarkdown = "";
+let currentDocToc = [];
+let docFontIndex = Number(localStorage.getItem("eeagent-doc-font-index") || 2);
+let docSearchHits = [];
+let docSearchIndex = -1;
+let docPreviousHash = "";
+
+function docEscapeHtml(value){
+  return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[char]);
+}
+function docSafeUrl(url){
+  const value=String(url||"").trim();
+  if(value.startsWith("#")||value.startsWith("./")||value.startsWith("../")||/^https?:\/\//i.test(value)||/^mailto:/i.test(value)) return value;
+  return "#";
+}
+function docInline(text){
+  const placeholders=[];
+  const hold=html=>{const key=`DOCINLINEPLACEHOLDER${placeholders.length}TOKEN`;placeholders.push(html);return key;};
+  let safe=docEscapeHtml(text);
+  safe=safe.replace(/`([^`]+)`/g,(_,code)=>hold(`<code>${code}</code>`));
+  safe=safe.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+&quot;[^&]*&quot;)?\)/g,(_,label,url)=>hold(`<a href="${docEscapeHtml(docSafeUrl(url))}" target="_blank" rel="noopener">${label}</a>`));
+  safe=safe.replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>");
+  safe=safe.replace(/__([^_]+)__/g,"<strong>$1</strong>");
+  safe=safe.replace(/~~([^~]+)~~/g,"<del>$1</del>");
+  safe=safe.replace(/(^|[^*])\*([^*\n]+)\*/g,"$1<em>$2</em>");
+  safe=safe.replace(/(^|[^_])_([^_\n]+)_/g,"$1<em>$2</em>");
+  safe=safe.replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g,(m,prefix,url)=>`${prefix}<a href="${url}" target="_blank" rel="noopener">${url}</a>`);
+  placeholders.forEach((value,index)=>{safe=safe.replace(`DOCINLINEPLACEHOLDER${index}TOKEN`,value);});
+  return safe;
+}
+function docSlug(text,index){
+  const clean=String(text).replace(/[`*_~\[\](){}<>]/g,"").trim().toLowerCase().replace(/\s+/g,"-").replace(/[^\p{L}\p{N}\-_]/gu,"").slice(0,64);
+  return `doc-section-${index}-${clean||"section"}`;
+}
+function isTableSeparator(line){
+  return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+}
+function splitTableRow(line){
+  let value=line.trim();
+  if(value.startsWith("|"))value=value.slice(1);
+  if(value.endsWith("|"))value=value.slice(0,-1);
+  return value.split(/(?<!\\)\|/).map(cell=>cell.trim().replace(/\\\|/g,"|"));
+}
+function renderMarkdown(markdown){
+  const lines=String(markdown||"").replace(/\r\n?/g,"\n").split("\n");
+  const out=[];const toc=[];let paragraph=[];let listType=null;let inCode=false;let codeLang="";let code=[];let headingIndex=0;
+  const flushParagraph=()=>{if(paragraph.length){out.push(`<p>${docInline(paragraph.join(" ").trim())}</p>`);paragraph=[];}};
+  const closeList=()=>{if(listType){out.push(`</${listType}>`);listType=null;}};
+  const openList=(type)=>{if(listType!==type){closeList();out.push(`<${type}>`);listType=type;}};
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
+    const fence=line.match(/^\s*```\s*([^\s`]*)\s*$/);
+    if(fence){
+      if(!inCode){flushParagraph();closeList();inCode=true;codeLang=fence[1]||"";code=[];}
+      else{const label=codeLang?`<span class="code-lang">${docEscapeHtml(codeLang)}</span>`:"";out.push(`<pre>${label}<code>${docEscapeHtml(code.join("\n"))}</code></pre>`);inCode=false;codeLang="";code=[];}
+      continue;
+    }
+    if(inCode){code.push(line);continue;}
+    if(!line.trim()){flushParagraph();closeList();continue;}
+
+    const heading=line.match(/^(#{1,6})\s+(.+?)\s*#*$/);
+    if(heading){flushParagraph();closeList();headingIndex++;const level=heading[1].length;const text=heading[2].trim();const id=docSlug(text,headingIndex);out.push(`<h${level} id="${id}">${docInline(text)}</h${level}>`);if(level<=3)toc.push({id,text,textPlain:text.replace(/[`*_~]/g,""),level});continue;}
+    if(/^\s*([-*_])(?:\s*\1){2,}\s*$/.test(line)){flushParagraph();closeList();out.push("<hr>");continue;}
+
+    if(i+1<lines.length&&line.includes("|")&&isTableSeparator(lines[i+1])){
+      flushParagraph();closeList();const headers=splitTableRow(line);i+=1;const rows=[];
+      while(i+1<lines.length&&lines[i+1].trim()&&lines[i+1].includes("|")){rows.push(splitTableRow(lines[++i]));}
+      out.push(`<table><thead><tr>${headers.map(cell=>`<th>${docInline(cell)}</th>`).join("")}</tr></thead><tbody>${rows.map(row=>`<tr>${headers.map((_,index)=>`<td>${docInline(row[index]||"")}</td>`).join("")}</tr>`).join("")}</tbody></table>`);continue;
+    }
+
+    const unordered=line.match(/^\s*[-+*]\s+(.+)$/);
+    if(unordered){flushParagraph();openList("ul");out.push(`<li>${docInline(unordered[1])}</li>`);continue;}
+    const ordered=line.match(/^\s*\d+[.)]\s+(.+)$/);
+    if(ordered){flushParagraph();openList("ol");out.push(`<li>${docInline(ordered[1])}</li>`);continue;}
+    const quote=line.match(/^\s*>\s?(.*)$/);
+    if(quote){flushParagraph();closeList();out.push(`<blockquote>${docInline(quote[1])}</blockquote>`);continue;}
+    paragraph.push(line.trim());
+  }
+  if(inCode){const label=codeLang?`<span class="code-lang">${docEscapeHtml(codeLang)}</span>`:"";out.push(`<pre>${label}<code>${docEscapeHtml(code.join("\n"))}</code></pre>`);}
+  flushParagraph();closeList();
+  return {html:out.join("\n"),toc};
+}
+function updateDocFont(){
+  docFontIndex=Math.max(0,Math.min(DOC_FONT_SIZES.length-1,docFontIndex));
+  $("#docReader").style.setProperty("--doc-font-size",`${DOC_FONT_SIZES[docFontIndex]}px`);
+  localStorage.setItem("eeagent-doc-font-index",String(docFontIndex));
+  $("#docFontBtn").title=`当前字号 ${DOC_FONT_SIZES[docFontIndex]}px，点击继续放大`;
+}
+async function loadAgentMarkdown(agent){
+  if(globalThis.EMBEDDED_AGENT_DOCS?.[String(agent.id)]) return globalThis.EMBEDDED_AGENT_DOCS[String(agent.id)];
+  const response=await fetch(agent.doc,{cache:"force-cache"});
+  if(!response.ok)throw new Error(`HTTP ${response.status}`);
+  return await response.text();
+}
+async function openDocument(agentId,{updateHash=true}={}){
+  const agent=agents.find(item=>item.id===Number(agentId));
+  if(!agent||!agent.doc){toast("这个智能体还没有关联设计方案");return;}
+  currentDocAgent=agent;currentDocMarkdown="";currentDocToc=[];clearDocSearch();
+  docPreviousHash=location.hash;
+  $("#docTitle").textContent=agent.title;
+  $("#docMeta").textContent=`Agent ${String(agent.id).padStart(2,"0")} · ${agent.category}`;
+  $("#docSourceInfo").innerHTML=`<b>设计方案 Markdown</b><span class="doc-source-pill">${Math.max(1,Math.round((agent.docBytes||0)/1024))} KB</span><span>${docEscapeHtml(agent.docSource||agent.doc)}</span>`;
+  $("#markdownBody").hidden=true;$("#docReaderNav").hidden=true;
+  $("#docLoading").hidden=false;$("#docLoading").innerHTML='<div><b>正在加载设计方案</b><span>Markdown 将在手机上转换为易读页面。</span></div>';
+  $("#docTocList").innerHTML="";$("#docProgressBar").style.width="0%";
+  $("#docReader").classList.add("show");$("#docReader").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";updateDocFont();
+  if(updateHash)history.pushState({docAgentId:agent.id},"",`#agent-${agent.id}-design`);
+  try{
+    currentDocMarkdown=await loadAgentMarkdown(agent);
+    const rendered=renderMarkdown(currentDocMarkdown);currentDocToc=rendered.toc;
+    $("#markdownBody").innerHTML=rendered.html;$("#markdownBody").hidden=false;$("#docLoading").hidden=true;
+    renderDocToc();renderDocNavigation();$("#docReaderScroll").scrollTop=0;
+    $("#docOfflineBanner").classList.toggle("show",location.protocol.startsWith("http"));
+  }catch(error){
+    $("#docLoading").hidden=false;$("#docLoading").innerHTML=`<div><b>设计方案加载失败</b><span>${docEscapeHtml(error.message)}。部署 PWA 时请确认 docs 目录已上传。</span></div>`;
+  }
+}
+function closeDocument({historyBack=true}={}){
+  if(!$("#docReader").classList.contains("show"))return;
+  $("#docReader").classList.remove("show");$("#docReader").setAttribute("aria-hidden","true");document.body.style.overflow="";hideDocToc();clearDocSearch();
+  if(historyBack&&location.hash.match(/^#agent-\d+-design$/)){
+    if(history.state?.docAgentId)history.back();
+    else history.replaceState(null,"",`${location.pathname}${location.search}`);
+  }
+}
+function renderDocToc(){
+  $("#docTocList").innerHTML=currentDocToc.length?currentDocToc.map(item=>`<button data-doc-anchor="${item.id}" data-level="${item.level}">${docEscapeHtml(item.textPlain)}</button>`).join(""):'<div class="workflow-empty">本文档没有可识别的标题。</div>';
+  $$("[data-doc-anchor]").forEach(button=>button.onclick=()=>{document.getElementById(button.dataset.docAnchor)?.scrollIntoView({behavior:"smooth",block:"start"});hideDocToc();});
+}
+function renderDocNavigation(){
+  if(!currentDocAgent)return;const prev=agents.find(a=>a.id===currentDocAgent.id-1);const next=agents.find(a=>a.id===currentDocAgent.id+1);const items=[];
+  if(prev)items.push(`<button data-doc-agent="${prev.id}"><small>上一篇 · Agent ${prev.id}</small><b>${docEscapeHtml(prev.title)}</b></button>`);else items.push("<span></span>");
+  if(next)items.push(`<button data-doc-agent="${next.id}"><small>下一篇 · Agent ${next.id}</small><b>${docEscapeHtml(next.title)}</b></button>`);else items.push("<span></span>");
+  $("#docReaderNav").innerHTML=items.join("");$("#docReaderNav").hidden=false;$$('[data-doc-agent]').forEach(button=>button.onclick=()=>openDocument(+button.dataset.docAgent));
+}
+function showDocToc(){$("#docToc").classList.add("show");$("#docTocBackdrop").classList.add("show");}
+function hideDocToc(){$("#docToc").classList.remove("show");$("#docTocBackdrop").classList.remove("show");}
+function updateDocProgress(){const el=$("#docReaderScroll");const max=el.scrollHeight-el.clientHeight;$("#docProgressBar").style.width=`${max>0?Math.min(100,(el.scrollTop/max)*100):0}%`;}
+function clearDocSearch(){
+  $$("mark.doc-search-hit").forEach(mark=>{const parent=mark.parentNode;parent.replaceChild(document.createTextNode(mark.textContent),mark);parent.normalize();});
+  docSearchHits=[];docSearchIndex=-1;if($("#docSearchCount"))$("#docSearchCount").textContent="0 / 0";
+}
+function runDocSearch(){
+  clearDocSearch();const query=$("#docSearchInput").value.trim();if(!query)return;
+  const walker=document.createTreeWalker($("#markdownBody"),NodeFilter.SHOW_TEXT,{acceptNode(node){return node.parentElement.closest("pre,code,script,style")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});
+  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);const lower=query.toLocaleLowerCase();
+  nodes.forEach(node=>{let text=node.nodeValue;let start=0;const parts=[];while(true){const index=text.toLocaleLowerCase().indexOf(lower,start);if(index<0)break;parts.push({start:index,end:index+query.length});start=index+query.length;if(parts.length+docSearchHits.length>=100)break;}if(!parts.length)return;const fragment=document.createDocumentFragment();let cursor=0;parts.forEach(part=>{fragment.append(document.createTextNode(text.slice(cursor,part.start)));const mark=document.createElement("mark");mark.className="doc-search-hit";mark.textContent=text.slice(part.start,part.end);fragment.append(mark);docSearchHits.push(mark);cursor=part.end;});fragment.append(document.createTextNode(text.slice(cursor)));node.parentNode.replaceChild(fragment,node);});
+  if(docSearchHits.length){docSearchIndex=0;focusDocSearchHit();}else toast("当前文档中没有找到该内容");
+}
+function focusDocSearchHit(direction=0){if(!docSearchHits.length)return;docSearchHits[docSearchIndex]?.classList.remove("doc-search-current");docSearchIndex=(docSearchIndex+direction+docSearchHits.length)%docSearchHits.length;const hit=docSearchHits[docSearchIndex];hit.classList.add("doc-search-current");hit.scrollIntoView({behavior:"smooth",block:"center"});$("#docSearchCount").textContent=`${docSearchIndex+1} / ${docSearchHits.length}`;}
+function downloadCurrentMarkdown(){
+  if(!currentDocAgent||!currentDocMarkdown)return;const blob=new Blob([currentDocMarkdown],{type:"text/markdown;charset=utf-8"});const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download=`Agent-${String(currentDocAgent.id).padStart(2,"0")}-${currentDocAgent.title}.md`.replace(/[\\/:*?"<>|]/g,"-");link.click();URL.revokeObjectURL(url);
+}
+function handleDocumentHash(){const match=location.hash.match(/^#agent-(\d+)-design$/);if(match){const id=+match[1];if(!$("#docReader").classList.contains("show")||currentDocAgent?.id!==id)openDocument(id,{updateHash:false});}}
+
+$("#docBackBtn").onclick=()=>closeDocument();
+$("#docTocBtn").onclick=showDocToc;$("#docTocClose").onclick=hideDocToc;$("#docTocBackdrop").onclick=hideDocToc;
+$("#docSearchBtn").onclick=()=>{$("#docSearchRow").classList.toggle("show");if($("#docSearchRow").classList.contains("show"))setTimeout(()=>$("#docSearchInput").focus(),50);};
+$("#docSearchInput").oninput=()=>clearDocSearch();
+$("#docSearchInput").onkeydown=e=>{if(e.key==="Enter")runDocSearch();if(e.key==="Escape")$("#docSearchRow").classList.remove("show");};
+$("#docSearchNext").onclick=()=>docSearchHits.length?focusDocSearchHit(1):runDocSearch();$("#docSearchPrev").onclick=()=>docSearchHits.length?focusDocSearchHit(-1):runDocSearch();
+$("#docSearchCount").onclick=runDocSearch;
+$("#docFontBtn").onclick=()=>{docFontIndex=(docFontIndex+1)%DOC_FONT_SIZES.length;updateDocFont();toast(`文档字号：${DOC_FONT_SIZES[docFontIndex]}px`);};
+$("#docDownloadBtn").onclick=downloadCurrentMarkdown;$("#docReaderScroll").addEventListener("scroll",updateDocProgress,{passive:true});
+window.addEventListener("popstate",()=>{if($("#docReader").classList.contains("show")&&!location.hash.match(/^#agent-\d+-design$/))closeDocument({historyBack:false});else handleDocumentHash();});
+
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove("show"),2200)}
 function downloadJson(){
   const blob=new Blob([JSON.stringify(workflowPayload(),null,2)],{type:"application/json"});
@@ -931,10 +1164,11 @@ $("#themeBtn").onclick=()=>{
   document.documentElement.dataset.theme=next;localStorage.setItem("eeagent-theme",next);
 };
 document.documentElement.dataset.theme=localStorage.getItem("eeagent-theme")||"light";
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#agentModal").classList.remove("show");$("#workflowDrawer").classList.remove("show")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if($("#docReader").classList.contains("show")){closeDocument();return;}$("#agentModal").classList.remove("show");$("#workflowDrawer").classList.remove("show")}});
 persistWorkflowLibrary();
 persistWorkflowDraft();
 render();
+handleDocumentHash();
 
 // ===== EEAgent mobile helpers =====
 let eeagentDeferredInstall = null;
